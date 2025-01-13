@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - YouDemy</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body {
+            background: linear-gradient(135deg, #6b46c1, #553c9a);
+        }
+    </style>
+</head>
+
+<body class="min-h-screen flex items-center justify-center">
+    <div class="flex w-full max-w-6xl bg-white rounded-lg shadow-2xl overflow-hidden">
+        <div class="w-1/2 bg-gradient-to-r from-purple-600 to-blue-500 p-12 flex flex-col justify-center text-white">
+            <h1 class="text-4xl font-bold mb-4">Welcome Back!</h1>
+            <p class="text-lg mb-6">
+                Unlock your potential with YouDemy. Learn, grow, and achieve your goals with our expert-led courses.
+            </p>
+            <a href="index.html"
+                class="flex items-center text-white hover:text-purple-200 transition duration-300">
+                <i class="fas fa-arrow-left mr-2"></i> Back to Home
+            </a>
+        </div>
+
+        <div class="w-1/2 p-12">
+            <div class="flex justify-center mb-6">
+                <img src="../assets/images/logobanner.png" alt="YouDemy Logo" class="h-12 w-auto">
+            </div>
+
+            <form class="space-y-6">
+                <div>
+                    <label for="email" class="block text-sm font-medium text-gray-700">Email</label>
+                    <input type="email" id="email" name="email" placeholder="Enter your email"
+                        class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-purple-600 focus:border-transparent">
+                </div>
+
+                <div>
+                    <label for="password" class="block text-sm font-medium text-gray-700">Password</label>
+                    <input type="password" id="password" name="password" placeholder="Enter your password"
+                        class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-purple-600 focus:border-transparent">
+                </div>
+
+                <div class="flex items-center justify-between">
+                    <div class="flex items-center">
+                        <input type="checkbox" id="remember-me" name="remember-me"
+                            class="h-4 w-4 text-purple-600 focus:ring-purple-500 border-gray-300 rounded">
+                        <label for="remember-me" class="ml-2 block text-sm text-gray-700">Remember me</label>
+                    </div>
+                    <div>
+                        <a href="#" class="text-sm text-purple-600 hover:text-purple-700">Forgot password?</a>
+                    </div>
+                </div>
+
+                <div>
+                    <button type="submit"
+                        class="w-full bg-purple-600 text-white px-4 py-2 rounded-lg hover:bg-purple-700 transition duration-300">
+                        Log In
+                    </button>
+                </div>
+            </form>
+
+            <div class="mt-6 text-center">
+                <p class="text-sm text-gray-600">
+                    Don't have an account?
+                    <a href="#" class="text-purple-600 hover:text-purple-700">Sign up</a>
+                </p>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>
