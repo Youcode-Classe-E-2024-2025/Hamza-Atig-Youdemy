@@ -38,13 +38,14 @@ if (!$user->isLoggedIn() || !$user->isStudent()) {
 
 $user_name = $user->getUserName($_SESSION['user_id']);
 ?>
+
 <!DOCTYPE html>
 <html lang="en" class="scroll-smooth">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>YouDemy - Student</title>
+    <title>YouDemy - Home</title>
     <link rel="stylesheet" href="../../assets/css/output.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link rel="shortcut icon" href="../../assets/images/favicon.png" type="image/x-icon">
@@ -178,7 +179,7 @@ $user_name = $user->getUserName($_SESSION['user_id']);
         <div class="px-4">
             <div class="flex items-center justify-between">
                 <div class="flex shrink-0">
-                    <a aria-current="page" class="flex items-center" href="./hero.html">
+                    <a aria-current="page" class="flex items-center" href="./hero.php">
                         <img class="h-9 w-auto" src="../../assets/images/logobanner.png" alt="">
                     </a>
                 </div>
@@ -319,7 +320,7 @@ $user_name = $user->getUserName($_SESSION['user_id']);
                         <input type="text" placeholder="Search courses, tutors..."
                             class="ml-2 bg-transparent focus:outline-none w-48">
                     </div>
-                    <a href="../logout.php"
+                    <a href="../../logout.php"
                         class="h-8 px-3 py-2 flex items-center justify-center rounded-xl bg-white text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 transition-all duration-150 hover:bg-gray-50 sm:inline-flex">
                         <i class="fas fa-sign-out-alt mr-2"></i>
                         <span class="font-semibold pr-1">Log Out</span>
@@ -329,146 +330,206 @@ $user_name = $user->getUserName($_SESSION['user_id']);
         </div>
     </header>
 
-    <main class="p-8 min-h-screen mt-24">
-        <div class="max-w-7xl mx-auto">
-            <div class="bg-white rounded-xl shadow-lg p-8 mb-8 border border-purple-100">
-                <h1 class="text-4xl font-bold text-purple-900 mb-2">Welcome Back, <?php echo htmlspecialchars($user_name, ENT_QUOTES, 'UTF-8'); ?>! 👋</h1>
-                <p class="text-sm text-purple-600">Track your skills and progress with our interactive radar chart. Keep
-                    growing and improving!</p>
-                <div class="mt-6 flex space-x-4">
-                    <a href="./inrolled.php"
-                        class="bg-purple-600 text-white px-6 py-2 rounded-lg hover:bg-purple-700 transition-colors">
-                        View Enrolled Courses
-                    </a>
-                    <a href="./inrollnow.php"
-                        class="bg-white text-purple-600 px-6 py-2 rounded-lg border border-purple-600 hover:bg-purple-50 transition-colors">
-                        Enroll in New Course
-                    </a>
+    <main class="p-8 bg-gray-50 min-h-screen mt-28">
+        <div class="max-w-7xl mx-auto flex gap-8">
+            <aside class="w-72 bg-white rounded-xl shadow-lg p-6 sticky top-28 max-[650px]:hidden">
+                <h2 class="text-lg font-bold text-gray-900 mb-6">Filters</h2>
+                <div class="space-y-6">
+                    <div>
+                        <h3 class="text-sm font-semibold text-gray-700 mb-3">Category</h3>
+                        <ul class="space-y-2">
+                            <li>
+                                <label class="flex items-center text-sm text-gray-600 hover:text-purple-600 cursor-pointer">
+                                    <input type="checkbox" class="mr-2 rounded text-purple-600 focus:ring-purple-600">
+                                    Web Development
+                                </label>
+                            </li>
+                            <li>
+                                <label class="flex items-center text-sm text-gray-600 hover:text-purple-600 cursor-pointer">
+                                    <input type="checkbox" class="mr-2 rounded text-purple-600 focus:ring-purple-600">
+                                    Data Science
+                                </label>
+                            </li>
+                            <li>
+                                <label class="flex items-center text-sm text-gray-600 hover:text-purple-600 cursor-pointer">
+                                    <input type="checkbox" class="mr-2 rounded text-purple-600 focus:ring-purple-600">
+                                    Mobile Development
+                                </label>
+                            </li>
+                            <li>
+                                <label class="flex items-center text-sm text-gray-600 hover:text-purple-600 cursor-pointer">
+                                    <input type="checkbox" class="mr-2 rounded text-purple-600 focus:ring-purple-600">
+                                    UI/UX Design
+                                </label>
+                            </li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h3 class="text-sm font-semibold text-gray-700 mb-3">Rating</h3>
+                        <ul class="space-y-2">
+                            <li>
+                                <label class="flex items-center text-sm text-gray-600 hover:text-purple-600 cursor-pointer">
+                                    <input type="checkbox" class="mr-2 rounded text-purple-600 focus:ring-purple-600">
+                                    4 Stars & Above
+                                </label>
+                            </li>
+                            <li>
+                                <label class="flex items-center text-sm text-gray-600 hover:text-purple-600 cursor-pointer">
+                                    <input type="checkbox" class="mr-2 rounded text-purple-600 focus:ring-purple-600">
+                                    3 Stars & Above
+                                </label>
+                            </li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h3 class="text-sm font-semibold text-gray-700 mb-3">Price</h3>
+                        <ul class="space-y-2">
+                            <li>
+                                <label class="flex items-center text-sm text-gray-600 hover:text-purple-600 cursor-pointer">
+                                    <input type="checkbox" class="mr-2 rounded text-purple-600 focus:ring-purple-600">
+                                    Free
+                                </label>
+                            </li>
+                            <li>
+                                <label class="flex items-center text-sm text-gray-600 hover:text-purple-600 cursor-pointer">
+                                    <input type="checkbox" class="mr-2 rounded text-purple-600 focus:ring-purple-600">
+                                    Paid
+                                </label>
+                            </li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h3 class="text-sm font-semibold text-gray-700 mb-3">Duration</h3>
+                        <ul class="space-y-2">
+                            <li>
+                                <label class="flex items-center text-sm text-gray-600 hover:text-purple-600 cursor-pointer">
+                                    <input type="checkbox" class="mr-2 rounded text-purple-600 focus:ring-purple-600">
+                                    Less than 1 hour
+                                </label>
+                            </li>
+                            <li>
+                                <label class="flex items-center text-sm text-gray-600 hover:text-purple-600 cursor-pointer">
+                                    <input type="checkbox" class="mr-2 rounded text-purple-600 focus:ring-purple-600">
+                                    1-3 hours
+                                </label>
+                            </li>
+                            <li>
+                                <label class="flex items-center text-sm text-gray-600 hover:text-purple-600 cursor-pointer">
+                                    <input type="checkbox" class="mr-2 rounded text-purple-600 focus:ring-purple-600">
+                                    3+ hours
+                                </label>
+                            </li>
+                        </ul>
+                    </div>
+                    <button class="w-full text-center bg-purple-600 text-white py-2 px-4 rounded-lg hover:bg-purple-700 transition-colors">
+                        Reset Filters
+                    </button>
                 </div>
-            </div>
-
-            <div class="bg-white rounded-xl shadow-lg p-8 border border-purple-100">
-                <h2 class="text-3xl font-bold text-purple-900 mb-6">Skills Overview</h2>
-                <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
-                    <div class="bg-gradient-to-r from-purple-600 to-purple-400 rounded-xl p-6 shadow-lg">
-                        <div class="bg-white rounded-lg p-4">
-                            <canvas id="skillsChart"></canvas>
+            </aside>
+            <div class="flex-1">
+                <!-- Course Card 1 -->
+                <div class="bg-white rounded-xl shadow-lg overflow-hidden transition-shadow hover:shadow-xl mb-6">
+                    <div class="flex flex-row max-[1000px]:flex-col">
+                        <img src="../../assets/images/CoursesCover/C3.png" alt="" class="w-[40%] max-[1000px]:w-full">
+                        <div class="w-[60%] p-6 max-[1000px]:w-full">
+                            <h3 class="text-xl font-bold text-gray-900 mb-2">React Masterclass</h3>
+                            <p class="text-sm text-gray-600 mb-4">
+                                Build modern web apps with React. Learn hooks, state management, and more.
+                            </p>
+                            <div class="flex items-center mb-4">
+                                <img src="../../assets/images/Guest-user.png" alt="Instructor" class="w-10 h-10 rounded-full mr-3">
+                                <div>
+                                    <p class="text-sm font-medium text-gray-900">John Doe</p>
+                                    <p class="text-xs text-gray-500">Senior Frontend Developer</p>
+                                </div>
+                            </div>
+                            <div class="flex items-center mb-4">
+                                <div class="flex text-yellow-400">
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star-half-alt"></i>
+                                </div>
+                                <span class="text-sm text-gray-600 ml-2">4.5 (1.2k reviews)</span>
+                            </div>
+                            <div class="flex items-center justify-between">
+                                <span class="text-sm font-semibold text-gray-500">Purchased</span>
+                                <a href="#" class="text-center bg-purple-600 text-white py-2 px-4 rounded-lg hover:bg-purple-700 transition-colors">
+                                    Complete Now
+                                </a>
+                            </div>
                         </div>
                     </div>
-                    <div class="space-y-6">
-                        <div class="bg-purple-50 rounded-xl p-6 border border-purple-100">
-                            <h3 class="text-xl font-semibold text-purple-900 mb-4">Skill Levels</h3>
-                            <div class="space-y-3">
-                                <div class="flex items-center justify-between">
-                                    <p class="text-sm text-purple-600">React</p>
-                                    <div class="w-1/2 bg-purple-200 rounded-full h-2">
-                                        <div class="bg-purple-600 h-2 rounded-full" style="width: 85%;"></div>
-                                    </div>
-                                    <span class="text-sm font-bold text-purple-600">85%</span>
-                                </div>
-                                <div class="flex items-center justify-between">
-                                    <p class="text-sm text-purple-600">Python</p>
-                                    <div class="w-1/2 bg-purple-200 rounded-full h-2">
-                                        <div class="bg-purple-600 h-2 rounded-full" style="width: 90%;"></div>
-                                    </div>
-                                    <span class="text-sm font-bold text-purple-600">90%</span>
-                                </div>
-                                <div class="flex items-center justify-between">
-                                    <p class="text-sm text-purple-600">Flutter</p>
-                                    <div class="w-1/2 bg-purple-200 rounded-full h-2">
-                                        <div class="bg-purple-600 h-2 rounded-full" style="width: 75%;"></div>
-                                    </div>
-                                    <span class="text-sm font-bold text-purple-600">75%</span>
-                                </div>
-                                <div class="flex items-center justify-between">
-                                    <p class="text-sm text-purple-600">UI/UX</p>
-                                    <div class="w-1/2 bg-purple-200 rounded-full h-2">
-                                        <div class="bg-purple-600 h-2 rounded-full" style="width: 80%;"></div>
-                                    </div>
-                                    <span class="text-sm font-bold text-purple-600">80%</span>
-                                </div>
-                                <div class="flex items-center justify-between">
-                                    <p class="text-sm text-purple-600">Database</p>
-                                    <div class="w-1/2 bg-purple-200 rounded-full h-2">
-                                        <div class="bg-purple-600 h-2 rounded-full" style="width: 70%;"></div>
-                                    </div>
-                                    <span class="text-sm font-bold text-purple-600">70%</span>
+                </div>
+    
+                <!-- Course Card 2 -->
+                <div class="bg-white rounded-xl shadow-lg overflow-hidden transition-shadow hover:shadow-xl mb-6">
+                    <div class="flex flex-row max-[1000px]:flex-col">
+                        <img src="../../assets/images/CoursesCover/C2.jpg" alt="" class="w-[40%] max-[1000px]:w-full">
+                        <div class="w-[60%] p-6 max-[1000px]:w-full">
+                            <h3 class="text-xl font-bold text-gray-900 mb-2">Data Science Essentials</h3>
+                            <p class="text-sm text-gray-600 mb-4">
+                                Master Python, Pandas, and Machine Learning for data analysis.
+                            </p>
+                            <div class="flex items-center mb-4">
+                                <img src="../../assets/images/Guest-user.png" alt="Instructor" class="w-10 h-10 rounded-full mr-3">
+                                <div>
+                                    <p class="text-sm font-medium text-gray-900">Jane Smith</p>
+                                    <p class="text-xs text-gray-500">Data Scientist</p>
                                 </div>
                             </div>
-                        </div>
-
-                        <div class="bg-purple-50 rounded-xl p-6 border border-purple-100">
-                            <h3 class="text-xl font-semibold text-purple-900 mb-4">Quick Actions</h3>
-                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                                <a href="#"
-                                    class="bg-white rounded-xl p-4 text-center hover:bg-purple-100 transition-colors shadow-md">
-                                    <i class="fas fa-book text-2xl text-purple-600 mb-2"></i>
-                                    <p class="text-sm font-medium text-purple-900">View Courses</p>
-                                </a>
-                                <a href="#"
-                                    class="bg-white rounded-xl p-4 text-center hover:bg-purple-100 transition-colors shadow-md">
-                                    <i class="fas fa-chart-line text-2xl text-purple-600 mb-2"></i>
-                                    <p class="text-sm font-medium text-purple-900">Track Progress</p>
-                                </a>
-                                <a href="#"
-                                    class="bg-white rounded-xl p-4 text-center hover:bg-purple-100 transition-colors shadow-md">
-                                    <i class="fas fa-trophy text-2xl text-purple-600 mb-2"></i>
-                                    <p class="text-sm font-medium text-purple-900">Achievements</p>
-                                </a>
-                                <a href="#"
-                                    class="bg-white rounded-xl p-4 text-center hover:bg-purple-100 transition-colors shadow-md">
-                                    <i class="fas fa-users text-2xl text-purple-600 mb-2"></i>
-                                    <p class="text-sm font-medium text-purple-900">Community</p>
+                            <div class="flex items-center mb-4">
+                                <div class="flex text-yellow-400">
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                </div>
+                                <span class="text-sm text-gray-600 ml-2">5.0 (2.3k reviews)</span>
+                            </div>
+                            <div class="flex items-center justify-between">
+                                <span class="text-sm font-semibold text-gray-500">Purchased</span>
+                                <a href="#" class="text-center bg-purple-600 text-white py-2 px-4 rounded-lg hover:bg-purple-700 transition-colors">
+                                    Complete Now
                                 </a>
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
-
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mt-8">
-                <div class="bg-white rounded-xl shadow-lg p-8 border border-purple-100">
-                    <h2 class="text-2xl font-bold text-purple-900 mb-6">Recent Activity</h2>
-                    <div class="space-y-4">
-                        <div class="flex items-center space-x-4">
-                            <div class="w-10 h-10 bg-purple-100 rounded-full flex items-center justify-center">
-                                <i class="fas fa-check text-purple-600"></i>
+    
+                <!-- Course Card 3 -->
+                <div class="bg-white rounded-xl shadow-lg overflow-hidden transition-shadow hover:shadow-xl mb-6">
+                    <div class="flex flex-row max-[1000px]:flex-col">
+                        <img src="../../assets/images/CoursesCover/C1.png" alt="" class="w-[40%] max-[1000px]:w-full">
+                        <div class="w-[60%] p-6 max-[1000px]:w-full">
+                            <h3 class="text-xl font-bold text-gray-900 mb-2">Flutter Development</h3>
+                            <p class="text-sm text-gray-600 mb-4">
+                                Build cross-platform mobile apps with Flutter and Dart.
+                            </p>
+                            <div class="flex items-center mb-4">
+                                <img src="../../assets/images/Guest-user.png" alt="Instructor" class="w-10 h-10 rounded-full mr-3">
+                                <div>
+                                    <p class="text-sm font-medium text-gray-900">Alex Johnson</p>
+                                    <p class="text-xs text-gray-500">Mobile Developer</p>
+                                </div>
                             </div>
-                            <div>
-                                <p class="text-sm text-purple-900">Completed React Course</p>
-                                <p class="text-xs text-purple-400">2 hours ago</p>
+                            <div class="flex items-center mb-4">
+                                <div class="flex text-yellow-400">
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                </div>
+                                <span class="text-sm text-gray-600 ml-2">4.8 (1.8k reviews)</span>
                             </div>
-                        </div>
-                        <div class="flex items-center space-x-4">
-                            <div class="w-10 h-10 bg-purple-100 rounded-full flex items-center justify-center">
-                                <i class="fas fa-trophy text-purple-600"></i>
-                            </div>
-                            <div>
-                                <p class="text-sm text-purple-900">Achievement Unlocked: Python Pro</p>
-                                <p class="text-xs text-purple-400">1 day ago</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="bg-white rounded-xl shadow-lg p-8 border border-purple-100">
-                    <h2 class="text-2xl font-bold text-purple-900 mb-6">Upcoming Goals</h2>
-                    <div class="space-y-4">
-                        <div class="flex items-center space-x-4">
-                            <div class="w-10 h-10 bg-purple-100 rounded-full flex items-center justify-center">
-                                <i class="fas fa-bullseye text-purple-600"></i>
-                            </div>
-                            <div>
-                                <p class="text-sm text-purple-900">Complete Flutter Project</p>
-                                <p class="text-xs text-purple-400">Due in 3 days</p>
-                            </div>
-                        </div>
-                        <div class="flex items-center space-x-4">
-                            <div class="w-10 h-10 bg-purple-100 rounded-full flex items-center justify-center">
-                                <i class="fas fa-book text-purple-600"></i>
-                            </div>
-                            <div>
-                                <p class="text-sm text-purple-900">Start UI/UX Design Course</p>
-                                <p class="text-xs text-purple-400">Due in 5 days</p>
+                            <div class="flex items-center justify-between">
+                                <span class="text-sm font-semibold text-gray-500">Purchased</span>
+                                <a href="#" class="text-center bg-purple-600 text-white py-2 px-4 rounded-lg hover:bg-purple-700 transition-colors">
+                                    Complete Now
+                                </a>
                             </div>
                         </div>
                     </div>
@@ -476,50 +537,6 @@ $user_name = $user->getUserName($_SESSION['user_id']);
             </div>
         </div>
     </main>
-
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script>
-        const skillsCtx = document.getElementById('skillsChart').getContext('2d');
-        const skillsChart = new Chart(skillsCtx, {
-            type: 'radar',
-            data: {
-                labels: ['React', 'Python', 'Flutter', 'UI/UX', 'Database'],
-                datasets: [{
-                    label: 'Your Skills',
-                    data: [85, 90, 75, 80, 70],
-                    backgroundColor: 'rgba(124, 58, 237, 0.2)',
-                    borderColor: '#7C3AED',
-                    borderWidth: 2,
-                }]
-            },
-            options: {
-                responsive: true,
-                scales: {
-                    r: {
-                        angleLines: {
-                            color: '#E5E7EB',
-                        },
-                        grid: {
-                            color: '#E5E7EB',
-                        },
-                        pointLabels: {
-                            color: '#6B7280',
-                        },
-                        ticks: {
-                            display: false,
-                            beginAtZero: true,
-                            max: 100,
-                        }
-                    }
-                },
-                plugins: {
-                    legend: {
-                        display: false,
-                    },
-                },
-            }
-        });
-    </script>
 
     <footer class="bg-gray-50 text-gray-800 py-12 border-t-2">
         <div class="container mx-auto px-4">
