@@ -1,68 +1,72 @@
 <?php
+session_start();
 require '../config/db.php';
 
-class User {
-    private $db;
+$database = new Database();
+$pdo = $database->connect();
 
-    public function __construct() {
-        $database = new Database();
-        $this->db = $database->connect();
+class User {
+    private $pdo;
+
+    public function __construct($pdo) {
+        $this->pdo = $pdo;
     }
 
     public function login($email, $password) {
         if (empty($email) || empty($password)) {
             return "All fields are required.";
         }
-
-        $stmt = $this->db->prepare("SELECT * FROM users WHERE email = ?");
+    
+        $stmt = $this->pdo->prepare("SELECT * FROM users WHERE email = ?");
         $stmt->execute([$email]);
-
+    
         if ($stmt->rowCount() === 0) {
             return "Invalid email or password.";
         }
-
+    
         $user = $stmt->fetch(PDO::FETCH_ASSOC);
-
+    
         if (!password_verify($password, $user['password'])) {
             return "Invalid email or password.";
         }
-
-        // Check user status
-        switch ($user['status']) {
-            case 'active':
-                // Redirect based on role
-                if ($user['role'] === 'student') {
-                    header("Location: ./student/hero.php");
-                    exit();
-                } elseif ($user['role'] === 'teacher') {
-                    header("Location: ./teacher/dashboard.php");
-                    exit();
-                } else {
-                    return "Invalid role.";
-                }
-                break;
-
-            case 'pending':
-                return "Your account is pending approval. Please wait for admin confirmation.";
-
-            case 'suspended':
-                return "Your account has been suspended or banned by the admin.";
-
-            default:
-                return "Invalid account status.";
+    
+        echo "<pre>";
+        print_r($user);
+        echo "</pre>";
+    
+        $_SESSION['user_id'] = $user['user_id'];
+        $_SESSION['role'] = $user['role'];
+        $_SESSION['status'] = $user['status'];
+    
+        if ($user['status'] === 'active') {
+            if ($user['role'] === 'student') {
+                header("Location: student/hero.php");
+                exit();
+            } elseif ($user['role'] === 'teacher') {
+                header("Location: teacher/dashboard.php");
+                exit();
+            } else {
+                return "Invalid role.";
+            }
+        } elseif ($user['status'] === 'pending') {
+            return "Your account is pending approval. Please wait for admin confirmation.";
+        } elseif ($user['status'] === 'suspended') {
+            return "Your account has been suspended or banned by the admin.";
+        } else {
+            return "Invalid account status.";
         }
     }
+    
 }
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $email = htmlspecialchars($_POST['email'], ENT_QUOTES, 'UTF-8');
     $password = $_POST['password'];
 
-    $user = new User();
+    $user = new User($pdo);
     $message = $user->login($email, $password);
 }
 ?>
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
