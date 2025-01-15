@@ -1,5 +1,5 @@
 <?php
-require 'db.php';
+require '../config/db.php';
 
 class User {
     private $db;
@@ -34,7 +34,7 @@ class User {
 
         $stmt = $this->db->prepare("INSERT INTO users (username, email, password, role, status) VALUES (?, ?, ?, ?, ?)");
         if ($stmt->execute([$name, $email, $hashedPassword, $role, $status])) {
-            header("Location: login.html");
+            header("Location: login.php");
             exit();
         } else {
             return "Error: " . implode(" ", $stmt->errorInfo());
@@ -191,7 +191,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <div class="mt-6 text-center">
                 <p class="text-sm text-gray-600">
                     Already have an account?
-                    <a href="login.html" class="text-purple-600 hover:text-purple-700">Log in</a>
+                    <a href="login.php" class="text-purple-600 hover:text-purple-700">Log in</a>
                 </p>
             </div>
             <a href="index.html" class="min-[980px]:hidden flex items-center mt-6 text-black transition duration-300">
