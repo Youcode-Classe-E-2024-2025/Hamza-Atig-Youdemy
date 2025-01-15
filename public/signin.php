@@ -13,25 +13,32 @@ class User {
         if (empty($name) || empty($email) || empty($password)) {
             return "All fields are required.";
         }
-
+    
         if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
             return "Invalid email format.";
         }
-
+    
         if (strlen($password) < 6) {
             return "Password must be at least 6 characters long.";
         }
-
+    
         $stmt = $this->db->prepare("SELECT email FROM users WHERE email = ?");
         $stmt->execute([$email]);
-
+    
         if ($stmt->rowCount() > 0) {
             return "Email already exists.";
         }
-
+    
+        $stmt = $this->db->prepare("SELECT username FROM users WHERE username = ?");
+        $stmt->execute([$name]);
+    
+        if ($stmt->rowCount() > 0) {
+            return "Username already exists.";
+        }
+    
         $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
         $status = ($role === 'student') ? 'active' : 'pending';
-
+    
         $stmt = $this->db->prepare("INSERT INTO users (username, email, password, role, status) VALUES (?, ?, ?, ?, ?)");
         if ($stmt->execute([$name, $email, $hashedPassword, $role, $status])) {
             header("Location: login.php");
