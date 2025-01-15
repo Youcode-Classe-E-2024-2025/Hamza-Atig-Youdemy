@@ -1109,6 +1109,10 @@ video {
   margin-bottom: calc(1.5rem * var(--tw-space-y-reverse));
 }
 
+.self-center {
+  align-self: center;
+}
+
 .overflow-hidden {
   overflow: hidden;
 }
@@ -1397,6 +1401,10 @@ video {
   text-align: right;
 }
 
+.align-middle {
+  vertical-align: middle;
+}
+
 .text-2xl {
   font-size: 1.5rem;
   line-height: 2rem;
@@ -1547,6 +1555,11 @@ video {
 .text-purple-900 {
   --tw-text-opacity: 1;
   color: rgb(88 28 135 / var(--tw-text-opacity, 1));
+}
+
+.text-black {
+  --tw-text-opacity: 1;
+  color: rgb(0 0 0 / var(--tw-text-opacity, 1));
 }
 
 .shadow {
@@ -1865,6 +1878,24 @@ video {
   }
 
   .max-\[1000px\]\:flex-col {
+    flex-direction: column;
+  }
+}
+
+@media (max-width: 980px) {
+  .max-\[980px\]\:flex {
+    display: flex;
+  }
+
+  .max-\[980px\]\:hidden {
+    display: none;
+  }
+
+  .max-\[980px\]\:w-full {
+    width: 100%;
+  }
+
+  .max-\[980px\]\:flex-col {
     flex-direction: column;
   }
 }
