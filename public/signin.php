@@ -18,8 +18,8 @@ class User {
             return "Invalid email format.";
         }
     
-        if (strlen($password) < 6) {
-            return "Password must be at least 6 characters long.";
+        if (strlen($password) < 8 || !preg_match("/[A-Z]/", $password) || !preg_match("/[a-z]/", $password) || !preg_match("/[0-9]/", $password) || !preg_match("/[\W_]/", $password)) {
+            return "Password must be at least 8 characters long and include uppercase, lowercase, numbers, and special characters.";
         }
     
         $stmt = $this->db->prepare("SELECT email FROM users WHERE email = ?");
@@ -123,6 +123,23 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         input:checked + .slider:before {
             transform: translateX(30px);
         }
+
+        .password-strength {
+            margin-top: 0.5rem;
+            font-size: 0.875rem;
+        }
+
+        .password-strength.weak {
+            color: #e53e3e;
+        }
+
+        .password-strength.medium {
+            color: #dd6b20;
+        }
+
+        .password-strength.strong {
+            color: #38a169;
+        }
     </style>
 </head>
 <body class="min-h-screen flex items-center justify-center bg-gray-50">
@@ -138,7 +155,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             </a>
         </div>
 
-        <div class="w-1/2 max-[980px]:w-full p-12">
+        <div class="w-1/2 max-[980px]:w-full pt-4 pb-4 pr-10 pl-10">
             <div class="flex justify-center mb-6">
                 <img src="../assets/images/logobanner.png" alt="YouDemy Logo" class="h-12 w-auto">
             </div>
@@ -179,6 +196,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     <label for="password" class="block text-sm font-medium text-gray-700">Password</label>
                     <input type="password" id="password" name="password" placeholder="Enter your password"
                         class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-purple-600 focus:border-transparent" required>
+                    <div id="password-requirements" class="mt-2 space-y-1">
+                        <div id="length" class="text-[10px]">At least 8 characters long</div>
+                        <div id="uppercase" class="text-[10px]">Include uppercase letter</div>
+                        <div id="lowercase" class="text-[10px]">Include lowercase letter</div>
+                        <div id="number" class="text-[10px]">Include number</div>
+                        <div id="special" class="text-[10px]">Include special character</div>
+                    </div>
                 </div>
 
                 <div>
@@ -213,6 +237,26 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             const roleHidden = document.getElementById('role-hidden');
             roleHidden.value = roleToggle.checked ? 'teacher' : 'student';
         }
+
+        document.getElementById('password').addEventListener('input', function() {
+            const password = this.value;
+            const requirements = {
+                length: password.length >= 8,
+                uppercase: /[A-Z]/.test(password),
+                lowercase: /[a-z]/.test(password),
+                number: /[0-9]/.test(password),
+                special: /[\W_]/.test(password)
+            };
+
+            for (const [key, met] of Object.entries(requirements)) {
+                const requirementElement = document.getElementById(key);
+                if (met) {
+                    requirementElement.style.color = 'green';
+                } else {
+                    requirementElement.style.color = 'red';
+                }
+            }
+        });
     </script>
 </body>
 </html>
