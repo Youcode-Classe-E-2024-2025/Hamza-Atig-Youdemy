@@ -186,7 +186,7 @@ $user_name = $user->getUserName($_SESSION['user_id']);
         <div class="px-4">
             <div class="flex items-center justify-between">
                 <div class="flex shrink-0">
-                    <a aria-current="page" class="flex items-center" href="./hero.html">
+                    <a aria-current="page" class="flex items-center" href="./hero.php">
                         <img class="h-9 w-auto" src="../../assets/images/logobanner.png" alt="">
                     </a>
                 </div>
@@ -338,10 +338,23 @@ $user_name = $user->getUserName($_SESSION['user_id']);
                             </li>
                         </ul>
                     </div>
-                    <button
-                        class="w-full text-center bg-purple-600 text-white py-2 px-4 rounded-lg hover:bg-purple-700 transition-colors">
-                        Reset Filters
-                    </button>
+                    <div class="space-y-2">
+                        <h3 class="text-sm font-semibold text-gray-700 mb-1">Type</h3>
+                        <div class="flex items-center space-x-4">
+                            <label class="flex items-center text-sm text-gray-600 hover:text-purple-600 cursor-pointer">
+                                <input type="radio" class="mr-2 rounded text-purple-600 focus:ring-purple-600" name="type" value="all" checked>
+                                <span class="ml-1">All</span>
+                            </label>
+                            <label class="flex items-center text-sm text-gray-600 hover:text-purple-600 cursor-pointer">
+                                <input type="radio" class="mr-2 rounded text-purple-600 focus:ring-purple-600" name="type" value="enrolled">
+                                <span class="ml-1">Enrolled</span>
+                            </label>
+                            <label class="flex items-center text-sm text-gray-600 hover:text-purple-600 cursor-pointer">
+                                <input type="radio" class="mr-2 rounded text-purple-600 focus:ring-purple-600" name="type" value="not-enrolled">
+                                <span class="ml-1">Not Enrolled</span>
+                            </label>
+                        </div>
+                    </div>
                 </div>
             </aside>
             <script>
