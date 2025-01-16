@@ -3,7 +3,7 @@
 $database = new Database();
 $pdo = $database->connect();
 
-class Course {
+class CourseSTD {
     private $pdo;
 
     public function __construct($pdo) {
@@ -22,6 +22,6 @@ class Course {
     }
 }
 
-$course = new Course($pdo);
+$course = new CourseSTD($pdo);
 $courses = $course->getAllCourses();
 ?>

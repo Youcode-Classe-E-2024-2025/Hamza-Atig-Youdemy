@@ -336,7 +336,7 @@ $user_name = $user->getUserName($_SESSION['user_id']);
         </div>
     </header>
 
-    <main class="p-8 bg-gray-50 min-h-screen mt-28">
+    <main class="p-8 min-h-screen mt-28">
         <div class="max-w-7xl mx-auto flex gap-8">
             <aside class="w-72 bg-white rounded-xl shadow-lg p-6 sticky top-28 max-[650px]:hidden">
                 <h2 class="text-lg font-bold text-gray-900 mb-6">Filters</h2>
@@ -452,6 +452,14 @@ $user_name = $user->getUserName($_SESSION['user_id']);
                             <p class="text-gray-600">No courses available at the moment.</p>
                         <?php else: ?>
                             <?php foreach ($courses as $course): ?>
+                                <?php
+                                $stmt = $pdo->prepare("
+                                SELECT * FROM enrollments
+                                WHERE user_id = ? AND course_id = ?
+                                ");
+                                $stmt->execute([$_SESSION['user_id'], $course['course_id']]);
+                                $isEnrolled = $stmt->rowCount() > 0;
+                                ?>
                                 <div
                                     class="bg-white rounded-xl shadow-lg overflow-hidden transition-shadow hover:shadow-xl mb-6">
                                     <div class="flex flex-row max-[1000px]:flex-col">
@@ -468,7 +476,8 @@ $user_name = $user->getUserName($_SESSION['user_id']);
                                                     class="w-10 h-10 rounded-full mr-3">
                                                 <div>
                                                     <p class="text-sm font-medium text-gray-900">
-                                                        <?php echo $course['teacher_name']; ?></p>
+                                                        <?php echo $course['teacher_name']; ?>
+                                                    </p>
                                                     <p class="text-xs text-gray-500">Teacher</p>
                                                 </div>
                                             </div>
@@ -483,11 +492,25 @@ $user_name = $user->getUserName($_SESSION['user_id']);
                                                 <span class="text-sm text-gray-600 ml-2">5.0 (2.3k reviews)</span>
                                             </div>
                                             <div class="flex items-center justify-between">
-                                                <span class="text-sm font-semibold text-purple-600">free</span>
-                                                <a href="#"
-                                                    class="text-center bg-purple-600 text-white py-2 px-4 rounded-lg hover:bg-purple-700 transition-colors">
-                                                    Enroll Now
-                                                </a>
+                                                <span class="text-sm font-semibold text-purple-600">
+                                                    <?php echo $isEnrolled ? 'Purchased' : 'free'; ?>
+                                                </span>
+                                                <?php if ($isEnrolled): ?>
+                                                    <span class="text-center bg-green-600 text-white py-2 px-4 rounded-lg">
+                                                        Complete
+                                                    </span>
+                                                <?php else: ?>
+                                                    <form action="../Model/enroll.php" method="POST" class="inline">
+                                                        <input type="hidden" name="course_id"
+                                                            value="<?php echo $course['course_id']; ?>">
+                                                        <input type="hidden" name="user_id"
+                                                            value="<?php echo $_SESSION['user_id']; ?>">
+                                                        <button type="submit"
+                                                            class="text-center bg-purple-600 text-white py-2 px-4 rounded-lg hover:bg-purple-700 transition-colors">
+                                                            Enroll Now
+                                                        </button>
+                                                    </form>
+                                                <?php endif; ?>
                                             </div>
                                         </div>
                                     </div>
