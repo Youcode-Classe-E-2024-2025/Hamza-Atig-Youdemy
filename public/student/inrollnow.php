@@ -3,6 +3,7 @@ session_start();
 
 require '../../config/db.php';
 require '../Model/student_courses.php';
+require '../Model/fillter.php';
 
 $database = new Database();
 $pdo = $database->connect();
@@ -185,7 +186,7 @@ $user_name = $user->getUserName($_SESSION['user_id']);
         <div class="px-4">
             <div class="flex items-center justify-between">
                 <div class="flex shrink-0">
-                    <a aria-current="page" class="flex items-center" href="./hero.php">
+                    <a aria-current="page" class="flex items-center" href="./hero.html">
                         <img class="h-9 w-auto" src="../../assets/images/logobanner.png" alt="">
                     </a>
                 </div>
@@ -200,95 +201,41 @@ $user_name = $user->getUserName($_SESSION['user_id']);
                             <div>
                                 <h3 class="text-lg font-semibold text-gray-900 mb-4">Categories</h3>
                                 <ul class="space-y-3">
-                                    <li>
-                                        <a href="#"
-                                            class="flex items-center text-gray-700 hover:text-purple-600 transition duration-300">
-                                            <i class="fas fa-laptop-code text-purple-600 mr-2"></i>
-                                            Web Development
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="#"
-                                            class="flex items-center text-gray-700 hover:text-purple-600 transition duration-300">
-                                            <i class="fas fa-chart-line text-purple-600 mr-2"></i>
-                                            Data Science
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="#"
-                                            class="flex items-center text-gray-700 hover:text-purple-600 transition duration-300">
-                                            <i class="fas fa-mobile-alt text-purple-600 mr-2"></i>
-                                            Mobile App Development
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="#"
-                                            class="flex items-center text-gray-700 hover:text-purple-600 transition duration-300">
-                                            <i class="fas fa-paint-brush text-purple-600 mr-2"></i>
-                                            UI/UX Design
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="#"
-                                            class="flex items-center text-gray-700 hover:text-purple-600 transition duration-300">
-                                            <i class="fas fa-database text-purple-600 mr-2"></i>
-                                            Database Management
-                                        </a>
-                                    </li>
+                                    <?php $count = 0;
+                                    foreach ($categories as $category): ?>
+                                        <?php if (++$count > 3)
+                                            break; ?>
+                                        <li>
+                                            <a href="#"
+                                                class="flex items-center text-gray-700 hover:text-purple-600 transition duration-300">
+                                                <i class="fas fa-laptop-code text-purple-600 mr-2"></i>
+                                                <?php echo $category['category_name']; ?>
+                                            </a>
+                                        </li>
+                                    <?php endforeach; ?>
                                 </ul>
                             </div>
 
                             <div>
                                 <h3 class="text-lg font-semibold text-gray-900 mb-4">Popular Courses</h3>
                                 <ul class="space-y-3">
-                                    <li>
-                                        <a href="#"
-                                            class="flex items-center text-gray-700 hover:text-purple-600 transition duration-300">
-                                            <i class="fas fa-star text-yellow-400 mr-2"></i>
-                                            <div>
-                                                <span class="font-medium">React Masterclass</span>
-                                                <p class="text-sm text-gray-500">Build modern web apps with React.</p>
-                                            </div>
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="#"
-                                            class="flex items-center text-gray-700 hover:text-purple-600 transition duration-300">
-                                            <i class="fas fa-star text-yellow-400 mr-2"></i>
-                                            <div>
-                                                <span class="font-medium">Python for Data Science</span>
-                                                <p class="text-sm text-gray-500">Master Python for data analysis and
-                                                    machine learning.</p>
-                                            </div>
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="#"
-                                            class="flex items-center text-gray-700 hover:text-purple-600 transition duration-300">
-                                            <i class="fas fa-star text-yellow-400 mr-2"></i>
-                                            <div>
-                                                <span class="font-medium">Flutter Essentials</span>
-                                                <p class="text-sm text-gray-500">Build cross-platform mobile apps with
-                                                    Flutter.</p>
-                                            </div>
-                                        </a>
-                                    </li>
+                                    <?php $count = 0;
+                                    foreach ($enrolledCourses as $course): ?>
+                                        <?php if (++$count > 2)
+                                            break; ?>
+                                        <li>
+                                            <a href="#"
+                                                class="flex items-center text-gray-700 hover:text-purple-600 transition duration-300">
+                                                <i class="fas fa-star text-yellow-400 mr-2"></i>
+                                                <div>
+                                                    <span class="font-medium"><?php echo $course['title']; ?></span>
+                                                    <p class="text-sm text-gray-500"><?php echo $course['description']; ?>
+                                                    </p>
+                                                </div>
+                                            </a>
+                                        </li>
+                                    <?php endforeach; ?>
                                 </ul>
-                            </div>
-
-                            <div class="col-span-2 mt-4">
-                                <div class="flex justify-between">
-                                    <a href="#" class="text-purple-600 hover:text-purple-700 transition duration-300">
-                                        <i class="fas fa-book-open mr-2"></i>All Courses
-                                    </a>
-                                    <a href="#" class="text-purple-600 hover:text-purple-700 transition duration-300">
-                                        <i class="fas fa-certificate mr-2"></i>Certifications
-                                    </a>
-                                    <a href="#roadmap"
-                                        class="text-purple-600 hover:text-purple-700 transition duration-300">
-                                        <i class="fas fa-road mr-2"></i>Learning Paths
-                                    </a>
-                                </div>
                             </div>
                         </div>
                     </div>
@@ -326,7 +273,7 @@ $user_name = $user->getUserName($_SESSION['user_id']);
                         <input type="text" placeholder="Search courses, tutors..."
                             class="ml-2 bg-transparent focus:outline-none w-48">
                     </div>
-                    <a href="../../logout.php"
+                    <a href="../logout.php"
                         class="h-8 px-3 py-2 flex items-center justify-center rounded-xl bg-white text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 transition-all duration-150 hover:bg-gray-50 sm:inline-flex">
                         <i class="fas fa-sign-out-alt mr-2"></i>
                         <span class="font-semibold pr-1">Log Out</span>
@@ -343,74 +290,27 @@ $user_name = $user->getUserName($_SESSION['user_id']);
                 <div class="space-y-6">
                     <div>
                         <h3 class="text-sm font-semibold text-gray-700 mb-3">Category</h3>
-                        <ul class="space-y-2">
-                            <li>
-                                <label
-                                    class="flex items-center text-sm text-gray-600 hover:text-purple-600 cursor-pointer">
-                                    <input type="checkbox" class="mr-2 rounded text-purple-600 focus:ring-purple-600">
-                                    Web Development
-                                </label>
-                            </li>
-                            <li>
-                                <label
-                                    class="flex items-center text-sm text-gray-600 hover:text-purple-600 cursor-pointer">
-                                    <input type="checkbox" class="mr-2 rounded text-purple-600 focus:ring-purple-600">
-                                    Data Science
-                                </label>
-                            </li>
-                            <li>
-                                <label
-                                    class="flex items-center text-sm text-gray-600 hover:text-purple-600 cursor-pointer">
-                                    <input type="checkbox" class="mr-2 rounded text-purple-600 focus:ring-purple-600">
-                                    Mobile Development
-                                </label>
-                            </li>
-                            <li>
-                                <label
-                                    class="flex items-center text-sm text-gray-600 hover:text-purple-600 cursor-pointer">
-                                    <input type="checkbox" class="mr-2 rounded text-purple-600 focus:ring-purple-600">
-                                    UI/UX Design
-                                </label>
-                            </li>
-                        </ul>
+                        <select
+                            class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-600 focus:border-transparent">
+                            <option value="" disabled selected>Select a category</option>
+                            <?php foreach ($categories as $category): ?>
+                                <option value="<?php echo $category['category_id']; ?>">
+                                    <?php echo $category['category_name']; ?>
+                                </option>
+                            <?php endforeach; ?>
+                        </select>
                     </div>
                     <div>
-                        <h3 class="text-sm font-semibold text-gray-700 mb-3">Rating</h3>
-                        <ul class="space-y-2">
-                            <li>
-                                <label
-                                    class="flex items-center text-sm text-gray-600 hover:text-purple-600 cursor-pointer">
-                                    <input type="checkbox" class="mr-2 rounded text-purple-600 focus:ring-purple-600">
-                                    4 Stars & Above
-                                </label>
-                            </li>
-                            <li>
-                                <label
-                                    class="flex items-center text-sm text-gray-600 hover:text-purple-600 cursor-pointer">
-                                    <input type="checkbox" class="mr-2 rounded text-purple-600 focus:ring-purple-600">
-                                    3 Stars & Above
-                                </label>
-                            </li>
-                        </ul>
-                    </div>
-                    <div>
-                        <h3 class="text-sm font-semibold text-gray-700 mb-3">Price</h3>
-                        <ul class="space-y-2">
-                            <li>
-                                <label
-                                    class="flex items-center text-sm text-gray-600 hover:text-purple-600 cursor-pointer">
-                                    <input type="checkbox" class="mr-2 rounded text-purple-600 focus:ring-purple-600">
-                                    Free
-                                </label>
-                            </li>
-                            <li>
-                                <label
-                                    class="flex items-center text-sm text-gray-600 hover:text-purple-600 cursor-pointer">
-                                    <input type="checkbox" class="mr-2 rounded text-purple-600 focus:ring-purple-600">
-                                    Paid
-                                </label>
-                            </li>
-                        </ul>
+                        <h3 class="text-sm font-semibold text-gray-700 mb-3">Tags</h3>
+                        <div id="tagsContainer" class="flex flex-wrap gap-2">
+                            <?php foreach ($tags as $tag): ?>
+                                <span data-tag-id="<?php echo $tag['tag_id']; ?>"
+                                    class="tag-bubble bg-gray-100 text-gray-800 text-sm px-3 py-1 rounded-full cursor-pointer hover:bg-purple-100 transition-colors">
+                                    <?php echo $tag['tag_name']; ?>
+                                </span>
+                            <?php endforeach; ?>
+                        </div>
+                        <input type="hidden" id="selectedTags" name="selectedTags">
                     </div>
                     <div>
                         <h3 class="text-sm font-semibold text-gray-700 mb-3">Duration</h3>
@@ -444,6 +344,31 @@ $user_name = $user->getUserName($_SESSION['user_id']);
                     </button>
                 </div>
             </aside>
+            <script>
+                document.addEventListener('DOMContentLoaded', function () {
+                    const tagsContainer = document.getElementById('tagsContainer');
+                    const selectedTagsInput = document.getElementById('selectedTags');
+                    let selectedTags = [];
+
+                    tagsContainer.addEventListener('click', function (event) {
+                        const tagBubble = event.target.closest('.tag-bubble');
+                        if (tagBubble) {
+                            const tagId = tagBubble.getAttribute('data-tag-id');
+
+                            if (selectedTags.includes(tagId)) {
+                                selectedTags = selectedTags.filter(id => id !== tagId);
+                                tagBubble.classList.remove('bg-purple-600', 'text-white');
+                                tagBubble.classList.add('bg-gray-100', 'text-gray-800');
+                            } else {
+                                selectedTags.push(tagId);
+                                tagBubble.classList.remove('bg-gray-100', 'text-gray-800');
+                                tagBubble.classList.add('bg-purple-600', 'text-white');
+                            }
+                            selectedTagsInput.value = selectedTags.join(',');
+                        }
+                    });
+                });
+            </script>
             <div class="flex-1">
                 <div class="container mx-auto p-6">
                     <h2 class="text-2xl font-bold text-gray-900 mb-6">Available Courses</h2>
