@@ -4,6 +4,7 @@ session_start();
 require '../../config/db.php';
 require '../Model/fillter.php';
 require '../Model/check_user_std.php';
+require '../Model/hero_stats_config.php';
 
 
 ?>
@@ -250,7 +251,8 @@ require '../Model/check_user_std.php';
         <div class="max-w-7xl mx-auto">
             <div class="bg-white rounded-xl shadow-lg p-8 mb-8 border border-purple-100">
                 <h1 class="text-4xl font-bold text-purple-900 mb-2">Welcome Back,
-                    <?php echo htmlspecialchars($user_name, ENT_QUOTES, 'UTF-8'); ?>! 👋</h1>
+                    <?php echo htmlspecialchars($user_name, ENT_QUOTES, 'UTF-8'); ?>! 👋
+                </h1>
                 <p class="text-sm text-purple-600">Track your skills and progress with our interactive radar chart. Keep
                     growing and improving!</p>
                 <div class="mt-6 flex space-x-4">
@@ -344,24 +346,17 @@ require '../Model/check_user_std.php';
                 <div class="bg-white rounded-xl shadow-lg p-8 border border-purple-100">
                     <h2 class="text-2xl font-bold text-purple-900 mb-6">Recent Activity</h2>
                     <div class="space-y-4">
-                        <div class="flex items-center space-x-4">
-                            <div class="w-10 h-10 bg-purple-100 rounded-full flex items-center justify-center">
-                                <i class="fas fa-check text-purple-600"></i>
+                        <?php foreach ($enrollments as $enrollment): ?>
+                            <div class="flex items-center space-x-4">
+                                <div class="w-10 h-10 bg-purple-100 rounded-full flex items-center justify-center">
+                                    <i class="fas fa-book text-purple-600"></i>
+                                </div>
+                                <div>
+                                    <p class="text-sm text-purple-800"><strong class="text-purple-900">Enrolled in</strong>
+                                        <?= htmlspecialchars($enrollment['title']) ?></p>
+                                </div>
                             </div>
-                            <div>
-                                <p class="text-sm text-purple-900">Completed React Course</p>
-                                <p class="text-xs text-purple-400">2 hours ago</p>
-                            </div>
-                        </div>
-                        <div class="flex items-center space-x-4">
-                            <div class="w-10 h-10 bg-purple-100 rounded-full flex items-center justify-center">
-                                <i class="fas fa-trophy text-purple-600"></i>
-                            </div>
-                            <div>
-                                <p class="text-sm text-purple-900">Achievement Unlocked: Python Pro</p>
-                                <p class="text-xs text-purple-400">1 day ago</p>
-                            </div>
-                        </div>
+                        <?php endforeach; ?>
                     </div>
                 </div>
                 <div class="bg-white rounded-xl shadow-lg p-8 border border-purple-100">
@@ -393,14 +388,21 @@ require '../Model/check_user_std.php';
 
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script>
+        const enrolledCourses = <?php echo json_encode($enrolledCourses4); ?>;
+
+        const labels = enrolledCourses.map(course => course.category_name);
+
+        const userSkillData = enrolledCourses.map(course => 50);
+
         const skillsCtx = document.getElementById('skillsChart').getContext('2d');
+
         const skillsChart = new Chart(skillsCtx, {
             type: 'radar',
             data: {
-                labels: ['React', 'Python', 'Flutter', 'UI/UX', 'Database'],
+                labels,
                 datasets: [{
                     label: 'Your Skills',
-                    data: [85, 90, 75, 80, 70],
+                    data: userSkillData,
                     backgroundColor: 'rgba(124, 58, 237, 0.2)',
                     borderColor: '#7C3AED',
                     borderWidth: 2,
