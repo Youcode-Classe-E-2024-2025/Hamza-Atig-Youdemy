@@ -5,6 +5,11 @@ require '../../config/db.php';
 require '../Model/student_courses.php';
 require '../Model/fillter.php';
 require '../Model/check_user_std.php';
+
+require __DIR__ . '/../../vendor/autoload.php';
+
+use League\CommonMark\CommonMarkConverter;
+$converter = new CommonMarkConverter();
 ?>
 
 <!DOCTYPE html>
@@ -303,15 +308,18 @@ require '../Model/check_user_std.php';
                         <h3 class="text-sm font-semibold text-gray-700 mb-1">Type</h3>
                         <div class="flex items-center space-x-4">
                             <label class="flex items-center text-sm text-gray-600 hover:text-purple-600 cursor-pointer">
-                                <input type="radio" class="mr-2 rounded text-purple-600 focus:ring-purple-600" name="type" value="all" checked>
+                                <input type="radio" class="mr-2 rounded text-purple-600 focus:ring-purple-600"
+                                    name="type" value="all" checked>
                                 <span class="ml-1">All</span>
                             </label>
                             <label class="flex items-center text-sm text-gray-600 hover:text-purple-600 cursor-pointer">
-                                <input type="radio" class="mr-2 rounded text-purple-600 focus:ring-purple-600" name="type" value="enrolled">
+                                <input type="radio" class="mr-2 rounded text-purple-600 focus:ring-purple-600"
+                                    name="type" value="enrolled">
                                 <span class="ml-1">Enrolled</span>
                             </label>
                             <label class="flex items-center text-sm text-gray-600 hover:text-purple-600 cursor-pointer">
-                                <input type="radio" class="mr-2 rounded text-purple-600 focus:ring-purple-600" name="type" value="not-enrolled">
+                                <input type="radio" class="mr-2 rounded text-purple-600 focus:ring-purple-600"
+                                    name="type" value="not-enrolled">
                                 <span class="ml-1">Not Enrolled</span>
                             </label>
                         </div>
@@ -352,10 +360,7 @@ require '../Model/check_user_std.php';
                         <?php else: ?>
                             <?php foreach ($courses as $course): ?>
                                 <?php
-                                $stmt = $pdo->prepare("
-                                SELECT * FROM enrollments
-                                WHERE user_id = ? AND course_id = ?
-                                ");
+                                $stmt = $pdo->prepare("SELECT * FROM enrollments WHERE user_id = ? AND course_id = ?");
                                 $stmt->execute([$_SESSION['user_id'], $course['course_id']]);
                                 $isEnrolled = $stmt->rowCount() > 0;
                                 ?>
@@ -367,9 +372,7 @@ require '../Model/check_user_std.php';
                                         <div class="w-[60%] p-6 max-[1000px]:w-full">
                                             <h3 class="text-xl font-bold text-gray-900 mb-2"><?php echo $course['title']; ?>
                                             </h3>
-                                            <p class="text-sm text-gray-600 mb-4">
-                                                <?php echo $course['description']; ?>
-                                            </p>
+                                            <p class="text-sm text-gray-600 mb-4"><?php echo $course['description']; ?></p>
                                             <div class="flex items-center mb-4">
                                                 <img src="../../assets/images/Guest-user.png" alt="Instructor"
                                                     class="w-10 h-10 rounded-full mr-3">
@@ -391,13 +394,15 @@ require '../Model/check_user_std.php';
                                                 <span class="text-sm text-gray-600 ml-2">5.0 (2.3k reviews)</span>
                                             </div>
                                             <div class="flex items-center justify-between">
-                                                <span class="text-sm font-semibold text-purple-600">
-                                                    <?php echo $isEnrolled ? 'Purchased' : 'free'; ?>
-                                                </span>
+                                                <span
+                                                    class="text-sm font-semibold text-purple-600"><?php echo $isEnrolled ? 'Purchased' : 'free'; ?></span>
                                                 <?php if ($isEnrolled): ?>
-                                                    <span class="text-center bg-green-600 text-white py-2 px-4 rounded-lg">
+                                                    <button
+                                                        class="complete-button text-center bg-green-600 text-white py-2 px-4 rounded-lg"
+                                                        data-course-id="<?php echo $course['course_id']; ?>"
+                                                        data-course-title="<?php echo htmlspecialchars($course['title']); ?>">
                                                         Complete
-                                                    </span>
+                                                    </button>
                                                 <?php else: ?>
                                                     <form action="../Model/enroll.php" method="POST" class="inline">
                                                         <input type="hidden" name="course_id"
@@ -419,6 +424,69 @@ require '../Model/check_user_std.php';
                     </div>
                 </div>
             </div>
+
+            <div id="courseModal"
+                class="fixed inset-0 bg-black bg-opacity-50 hidden justify-center items-center p-4 z-50">
+                <div class="bg-white rounded-lg w-full max-w-3xl p-6">
+                    <div class="flex justify-between items-center mb-4">
+                        <h3 class="text-xl font-bold text-gray-900" id="modalTitle"></h3>
+                        <button id="closeModal" class="text-gray-500 hover:text-gray-700">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
+                    <div id="modalContent" class="mb-4"></div>
+                    <div class="flex justify-end">
+                        <button id="finishButton"
+                            class="bg-green-600 text-white py-2 px-4 rounded-lg hover:bg-green-700 transition-colors">
+                            Finish
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <script>
+                function openModal(courseId, courseTitle) {
+                    const modal = document.getElementById('courseModal');
+                    const modalTitle = document.getElementById('modalTitle');
+                    const modalContent = document.getElementById('modalContent');
+
+                    modalTitle.textContent = courseTitle;
+
+                    fetch(`../Model/get_course_content.php?course_id=${courseId}`)
+                        .then(response => response.text())
+                        .then(data => {
+                            modalContent.innerHTML = data;
+                            modal.classList.remove('hidden');
+                        })
+                        .catch(error => {
+                            console.error('Error fetching course content:', error);
+                            modalContent.innerHTML = '<p class="text-red-500">Error loading course content.</p>';
+                            modal.classList.remove('hidden');
+                        });
+
+                    const finishButton = document.getElementById('finishButton');
+                    finishButton.onclick = () => {
+                        alert(`Course ${courseTitle} marked as completed!`);
+                        closeModal();
+                    };
+
+                    const closeModalButton = document.getElementById('closeModal');
+                    closeModalButton.onclick = closeModal;
+                }
+
+                function closeModal() {
+                    const modal = document.getElementById('courseModal');
+                    modal.classList.add('hidden');
+                }
+
+                document.querySelectorAll('.complete-button').forEach(button => {
+                    button.addEventListener('click', () => {
+                        const courseId = button.getAttribute('data-course-id');
+                        const courseTitle = button.getAttribute('data-course-title');
+                        openModal(courseId, courseTitle);
+                    });
+                });
+            </script>
         </div>
     </main>
 
