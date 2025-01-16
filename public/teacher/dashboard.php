@@ -245,7 +245,12 @@ $user_name = $user->getUserName($_SESSION['user_id']);
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 <div class="card p-6">
                     <h3 class="text-lg font-semibold text-gray-900">Total Students</h3>
-                    <p class="text-3xl font-bold text-purple-600 mt-2">55</p>
+                    <?php
+                    $stmt = $pdo->prepare("SELECT COUNT(*) AS num_students FROM enrollments WHERE course_id IN (SELECT course_id FROM courses WHERE teacher_id = :teacher_id)");
+                    $stmt->execute(['teacher_id' => $_SESSION['user_id']]);
+                    $row = $stmt->fetch(PDO::FETCH_ASSOC);
+                    ?>
+                    <p class="text-3xl font-bold text-purple-600 mt-2"><?php echo $row['num_students']; ?></p>
                     <p class="text-sm text-gray-500">Enrolled in your courses</p>
                 </div>
                 <div class="card p-6">
@@ -296,8 +301,8 @@ $user_name = $user->getUserName($_SESSION['user_id']);
                     <?php foreach ($courses as $course): ?>
                         <div class="card">
                             <div class="flex flex-col">
-                                <img src="../../storage/uploads/course_thumbnails/<?php echo $course['thumbnail']; ?>" alt="Course Cover"
-                                    class="w-full h-40 object-cover">
+                                <img src="../../storage/uploads/course_thumbnails/<?php echo $course['thumbnail']; ?>"
+                                    alt="Course Cover" class="w-full h-40 object-cover">
                                 <div class="p-6">
                                     <h3 class="text-xl font-bold text-gray-900 mb-2"><?php echo $course['title']; ?></h3>
                                     <p class="text-sm text-gray-600 mb-4"><?php echo $course['description']; ?></p>
@@ -305,7 +310,8 @@ $user_name = $user->getUserName($_SESSION['user_id']);
                                         <img src="../../assets/images/Guest-user.png" alt="Instructor"
                                             class="w-10 h-10 rounded-full mr-3">
                                         <div>
-                                            <p class="text-sm font-medium text-gray-900"><?php echo $course['teacher_name']; ?></p>
+                                            <p class="text-sm font-medium text-gray-900"><?php echo $course['teacher_name']; ?>
+                                            </p>
                                             <p class="text-xs text-gray-500">Teacher</p>
                                         </div>
                                     </div>
@@ -329,19 +335,67 @@ $user_name = $user->getUserName($_SESSION['user_id']);
 
         <section class="mb-8">
             <h2 class="text-2xl font-bold text-gray-900 mb-6">Recent Activities</h2>
-            <div class="card p-6">
-                <div class="space-y-4">
+            <div class="space-y-4">
+                <?php
+                $teacher_id = $_SESSION['user_id'];
+
+                $stmtEnrollments = $pdo->prepare("
+        SELECT enrollment_id, e.enrolled_at, title AS course_title, username, email
+        FROM enrollments e
+        LEFT JOIN courses c ON e.course_id = c.course_id
+        LEFT JOIN users u ON e.user_id = u.user_id
+        WHERE c.teacher_id = ?
+        ORDER BY e.enrolled_at DESC
+        LIMIT 10
+    ");
+                $stmtEnrollments->execute([$teacher_id]);
+
+                $stmtCourses = $pdo->prepare("
+        SELECT course_id, title, created_at
+        FROM courses
+        WHERE teacher_id = ?
+        ORDER BY created_at DESC
+        LIMIT 10
+    ");
+                $stmtCourses->execute([$teacher_id]);
+
+                while ($row = $stmtEnrollments->fetch(PDO::FETCH_ASSOC)): ?>
                     <div class="flex items-center justify-between p-4 bg-gray-50 rounded-lg">
                         <div class="flex items-center gap-4">
                             <i class="fas fa-user-plus text-purple-600"></i>
                             <div>
-                                <h3 class="text-sm font-semibold text-gray-900">New Student Enrolled</h3>
-                                <p class="text-xs text-gray-500">John Doe joined your React Masterclass course.</p>
+                                <h3 class="text-sm font-semibold text-gray-900">
+                                    <?php echo $row['username']; ?> enrolled in course
+                                </h3>
+                                <p class="text-xs text-gray-500">
+                                    <?php echo $row['course_title']; ?> - <?php echo $row['email']; ?>
+                                </p>
                             </div>
                         </div>
-                        <span class="text-xs text-gray-500">2 hours ago</span>
+                        <span class="text-xs text-gray-500">
+                            <?php echo (new DateTime($row['enrolled_at']))->format('F j, Y, g:i a'); ?>
+                        </span>
                     </div>
-                </div>
+                <?php endwhile;
+
+                while ($row = $stmtCourses->fetch(PDO::FETCH_ASSOC)): ?>
+                    <div class="flex items-center justify-between p-4 bg-gray-50 rounded-lg">
+                        <div class="flex items-center gap-4">
+                            <i class="fas fa-book text-blue-600"></i>
+                            <div>
+                                <h3 class="text-sm font-semibold text-gray-900">
+                                    You created a new course
+                                </h3>
+                                <p class="text-xs text-gray-500">
+                                    <?php echo $row['title']; ?>
+                                </p>
+                            </div>
+                        </div>
+                        <span class="text-xs text-gray-500">
+                            <?php echo (new DateTime($row['created_at']))->format('F j, Y, g:i a'); ?>
+                        </span>
+                    </div>
+                <?php endwhile; ?>
             </div>
         </section>
     </div>
