@@ -267,11 +267,11 @@
                         <input type="text" placeholder="Search courses, tutors..." class="ml-2 bg-transparent focus:outline-none w-48">
                     </div>
                     <a class="hidden items-center justify-center rounded-xl bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 transition-all duration-150 hover:bg-gray-50 sm:inline-flex"
-                        href="signin.html">
+                        href="signin.php">
                         <i class="fas fa-user mr-1"></i>Sign in
                     </a>
                     <a class="inline-flex items-center justify-center rounded-xl bg-purple-600 px-3 py-2 text-sm font-semibold text-white shadow-sm transition-all duration-150 hover:bg-blue-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600"
-                        href="login.html">
+                        href="login.php">
                         <i class="fas fa-sign-in-alt mr-1"></i>Login
                     </a>
                 </div>

@@ -149,7 +149,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <p class="text-lg mb-6">
                 Unlock your potential with YouDemy. Sign up now to access expert-led courses and start your learning journey.
             </p>
-            <a href="index.html"
+            <a href="index.php"
                 class="flex items-center text-white hover:text-purple-200 transition duration-300">
                 <i class="fas fa-arrow-left mr-2"></i> Back to Home
             </a>
@@ -225,7 +225,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     <a href="login.php" class="text-purple-600 hover:text-purple-700">Log in</a>
                 </p>
             </div>
-            <a href="index.html" class="min-[980px]:hidden flex items-center mt-6 text-black transition duration-300">
+            <a href="index.php" class="min-[980px]:hidden flex items-center mt-6 text-black transition duration-300">
                 <i class="fas fa-arrow-left mr-2"></i> Back to Home
             </a>
         </div>

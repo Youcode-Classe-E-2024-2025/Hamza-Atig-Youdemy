@@ -30,10 +30,6 @@ class User {
             return "Invalid email or password.";
         }
     
-        echo "<pre>";
-        print_r($user);
-        echo "</pre>";
-    
         $_SESSION['user_id'] = $user['user_id'];
         $_SESSION['role'] = $user['role'];
         $_SESSION['status'] = $user['status'];
@@ -89,7 +85,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <p class="text-lg mb-6">
                 Sign in to continue your learning journey with YouDemy.
             </p>
-            <a href="index.html"
+            <a href="index.php"
                 class="flex items-center text-white hover:text-purple-200 transition duration-300">
                 <i class="fas fa-arrow-left mr-2"></i> Back to Home
             </a>
@@ -133,7 +129,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     <a href="signin.php" class="text-purple-600 hover:text-purple-700">Sign up</a>
                 </p>
             </div>
-            <a href="index.html" class="min-[980px]:hidden flex items-center mt-6 text-black transition duration-300">
+            <a href="index.php" class="min-[980px]:hidden flex items-center mt-6 text-black transition duration-300">
                 <i class="fas fa-arrow-left mr-2"></i> Back to Home
             </a>
         </div>
