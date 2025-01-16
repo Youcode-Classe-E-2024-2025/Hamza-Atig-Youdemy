@@ -228,6 +228,10 @@ $user_name = $user->getUserName($_SESSION['user_id']);
             <i class="fas fa-cog"></i>
             Settings
         </a>
+        <a href="../logout.php" class="text-gray-900 flex items-center">
+            <i class="fas fa-sign-out-alt mr-2"></i>
+            Log Out
+        </a>
     </div>
 
     <div class="main-content">
