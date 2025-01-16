@@ -336,23 +336,168 @@ $user_name = $user->getUserName($_SESSION['user_id']);
         </section>
     </div>
 
-    <div id="addCourseModal" class="modal">
-        <div class="modal-content">
-            <button class="modal-close" onclick="closeModal()">&times;</button>
-            <h2>Create New Course</h2>
-            <input type="text" placeholder="Course Title" required>
-            <textarea placeholder="Course Description" rows="4" required></textarea>
-            <button onclick="closeModal()">Create Course</button>
+    <div id="addCourseModal" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+        <div class="bg-white rounded-lg shadow-lg w-11/12 md:w-1/2 lg:w-1/3 p-6 max-h-[90vh] overflow-y-auto">
+            <!-- Modal Header -->
+            <div class="flex justify-between items-center mb-6">
+                <h2 class="text-xl font-semibold text-gray-900 flex items-center gap-2">
+                    <i class="fas fa-plus-circle text-purple-600"></i>
+                    Create New Course
+                </h2>
+                <button onclick="closeModal()" class="text-gray-500 hover:text-gray-700">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+
+            <!-- Modal Form -->
+            <form id="courseForm" action="add_course.php" method="POST" enctype="multipart/form-data">
+                <!-- Course Title -->
+                <div class="mb-4">
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Course Title</label>
+                    <div class="relative">
+                        <i class="fas fa-heading absolute left-3 top-3 text-gray-400"></i>
+                        <input type="text" name="title" placeholder="Enter course title" required
+                            class="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent">
+                    </div>
+                </div>
+
+                <!-- Course Description -->
+                <div class="mb-4">
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Course Description</label>
+                    <div class="relative">
+                        <i class="fas fa-align-left absolute left-3 top-3 text-gray-400"></i>
+                        <textarea name="description" placeholder="Enter course description" rows="4" required
+                            class="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"></textarea>
+                    </div>
+                </div>
+
+                <!-- Course Type -->
+                <div class="mb-4">
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Course Type</label>
+                    <div class="relative">
+                        <i class="fas fa-file-alt absolute left-3 top-3 text-gray-400"></i>
+                        <select name="type" id="courseType" required onchange="toggleCourseFields()"
+                            class="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent appearance-none">
+                            <option value="" disabled selected>Select Course Type</option>
+                            <option value="video">Video</option>
+                            <option value="doc">Document</option>
+                        </select>
+                        <i class="fas fa-chevron-down absolute right-3 top-3 text-gray-400 pointer-events-none"></i>
+                    </div>
+                </div>
+
+                <!-- Video Fields -->
+                <div id="videoFields" class="hidden mb-4">
+                    <div class="mb-4">
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Upload Video</label>
+                        <div class="relative">
+                            <i class="fas fa-video absolute left-3 top-3 text-gray-400"></i>
+                            <input type="file" name="video" accept="video/*"
+                                class="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent">
+                        </div>
+                    </div>
+                    <div class="mb-4">
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Video URL</label>
+                        <div class="relative">
+                            <i class="fas fa-link absolute left-3 top-3 text-gray-400"></i>
+                            <input type="text" name="video_url" placeholder="Enter video URL (if hosted externally)"
+                                class="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Document Fields -->
+                <div id="docFields" class="hidden mb-4">
+                    <div class="mb-4">
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Markdown Content</label>
+                        <div class="relative">
+                            <i class="fas fa-file-code absolute left-3 top-3 text-gray-400"></i>
+                            <textarea name="content_text" placeholder="Paste your markdown content here" rows="6"
+                                class="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"></textarea>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Thumbnail Upload -->
+                <div class="mb-4">
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Thumbnail</label>
+                    <div class="relative">
+                        <i class="fas fa-image absolute left-3 top-3 text-gray-400"></i>
+                        <input type="file" name="thumbnail" accept="image/*" required
+                            class="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent">
+                    </div>
+                </div>
+
+                <!-- Category Selection -->
+                <div class="mb-4">
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Category</label>
+                    <div class="relative">
+                        <i class="fas fa-folder absolute left-3 top-3 text-gray-400"></i>
+                        <select name="category_id" required
+                            class="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent appearance-none">
+                            <option value="" disabled selected>Select Category</option>
+                            <?php
+                            $stmt = $pdo->query("SELECT category_id, category_name FROM categories");
+                            while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+                                echo "<option value='{$row['category_id']}'>{$row['category_name']}</option>";
+                            }
+                            ?>
+                        </select>
+                        <i class="fas fa-chevron-down absolute right-3 top-3 text-gray-400 pointer-events-none"></i>
+                    </div>
+                </div>
+
+                <!-- Tags Selection -->
+                <div class="mb-6">
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Tags</label>
+                    <div class="relative">
+                        <i class="fas fa-tags absolute left-3 top-3 text-gray-400"></i>
+                        <select name="tags[]" multiple required
+                            class="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent appearance-none">
+                            <?php
+                            $stmt = $pdo->query("SELECT tag_id, tag_name FROM tags");
+                            while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+                                echo "<option value='{$row['tag_id']}'>{$row['tag_name']}</option>";
+                            }
+                            ?>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Submit Button -->
+                <button type="submit"
+                    class="w-full bg-purple-600 text-white py-2 px-4 rounded-lg hover:bg-purple-700 transition duration-300 flex items-center justify-center gap-2">
+                    <i class="fas fa-save"></i>
+                    Create Course
+                </button>
+            </form>
         </div>
     </div>
 
     <script>
+        function toggleCourseFields() {
+            const courseType = document.getElementById('courseType').value;
+            const videoFields = document.getElementById('videoFields');
+            const docFields = document.getElementById('docFields');
+
+            if (courseType === 'video') {
+                videoFields.classList.remove('hidden');
+                docFields.classList.add('hidden');
+            } else if (courseType === 'doc') {
+                videoFields.classList.add('hidden');
+                docFields.classList.remove('hidden');
+            } else {
+                videoFields.classList.add('hidden');
+                docFields.classList.add('hidden');
+            }
+        }
+
         function openModal() {
-            document.getElementById('addCourseModal').style.display = 'flex';
+            document.getElementById('addCourseModal').classList.remove('hidden');
         }
 
         function closeModal() {
-            document.getElementById('addCourseModal').style.display = 'none';
+            document.getElementById('addCourseModal').classList.add('hidden');
         }
     </script>
 </body>
