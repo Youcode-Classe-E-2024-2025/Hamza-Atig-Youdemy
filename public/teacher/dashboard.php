@@ -2,6 +2,7 @@
 session_start();
 
 require '../../config/db.php';
+require '../Model/created_courses.php';
 
 $database = new Database();
 $pdo = $database->connect();
@@ -285,35 +286,40 @@ $user_name = $user->getUserName($_SESSION['user_id']);
         <section class="mb-8">
             <h2 class="text-2xl font-bold text-gray-900 mb-6">Your Courses</h2>
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                <div class="card">
-                    <div class="flex flex-col">
-                        <img src="../../assets/images/CoursesCover/C3.png" alt="Course Cover"
-                            class="w-full h-40 object-cover">
-                        <div class="p-6">
-                            <h3 class="text-xl font-bold text-gray-900 mb-2">React Masterclass</h3>
-                            <p class="text-sm text-gray-600 mb-4">Build modern web apps with React. Learn hooks, state
-                                management, and more.</p>
-                            <div class="flex items-center mb-4">
-                                <img src="../../assets/images/Guest-user.png" alt="Instructor"
-                                    class="w-10 h-10 rounded-full mr-3">
-                                <div>
-                                    <p class="text-sm font-medium text-gray-900">John Doe</p>
-                                    <p class="text-xs text-gray-500">Senior Frontend Developer</p>
+                <?php if (empty($courses)): ?>
+                    <p class="text-gray-600">You haven't created any courses yet.</p>
+                <?php else: ?>
+                    <?php foreach ($courses as $course): ?>
+                        <div class="card">
+                            <div class="flex flex-col">
+                                <img src="../../storage/uploads/course_thumbnails/<?php echo $course['thumbnail']; ?>" alt="Course Cover"
+                                    class="w-full h-40 object-cover">
+                                <div class="p-6">
+                                    <h3 class="text-xl font-bold text-gray-900 mb-2"><?php echo $course['title']; ?></h3>
+                                    <p class="text-sm text-gray-600 mb-4"><?php echo $course['description']; ?></p>
+                                    <div class="flex items-center mb-4">
+                                        <img src="../../assets/images/Guest-user.png" alt="Instructor"
+                                            class="w-10 h-10 rounded-full mr-3">
+                                        <div>
+                                            <p class="text-sm font-medium text-gray-900"><?php echo $course['teacher_name']; ?></p>
+                                            <p class="text-xs text-gray-500">Teacher</p>
+                                        </div>
+                                    </div>
+                                    <div class="flex items-center">
+                                        <div class="flex text-yellow-400">
+                                            <i class="fas fa-star"></i>
+                                            <i class="fas fa-star"></i>
+                                            <i class="fas fa-star"></i>
+                                            <i class="fas fa-star"></i>
+                                            <i class="fas fa-star-half-alt"></i>
+                                        </div>
+                                        <span class="text-sm text-gray-600 ml-2">4.5 (1.2k reviews)</span>
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="flex items-center">
-                                <div class="flex text-yellow-400">
-                                    <i class="fas fa-star"></i>
-                                    <i class="fas fa-star"></i>
-                                    <i class="fas fa-star"></i>
-                                    <i class="fas fa-star"></i>
-                                    <i class="fas fa-star-half-alt"></i>
-                                </div>
-                                <span class="text-sm text-gray-600 ml-2">4.5 (1.2k reviews)</span>
                             </div>
                         </div>
-                    </div>
-                </div>
+                    <?php endforeach; ?>
+                <?php endif; ?>
             </div>
         </section>
 
