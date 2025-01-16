@@ -466,7 +466,34 @@ $converter = new CommonMarkConverter();
 
                     const finishButton = document.getElementById('finishButton');
                     finishButton.onclick = () => {
-                        alert(`Course ${courseTitle} marked as completed!`);
+                        fetch('../Model/generate_certificate.php', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/x-www-form-urlencoded',
+                            },
+                            body: `user_id=<?php echo $_SESSION['user_id']; ?>&course_id=${courseId}`,
+                        })
+                            .then(response => {
+                                if (!response.ok) {
+                                    throw new Error('Network response was not ok');
+                                }
+                                return response.blob();
+                            })
+                            .then(blob => {
+                                const url = window.URL.createObjectURL(blob);
+                                const a = document.createElement('a');
+                                a.href = url;
+                                a.download = 'certificate.pdf';
+                                document.body.appendChild(a);
+                                a.click();
+                                document.body.removeChild(a);
+                                window.URL.revokeObjectURL(url);
+                            })
+                            .catch(error => {
+                                console.error('Error generating certificate:', error);
+                                alert('Error generating certificate. Please try again.');
+                            });
+
                         closeModal();
                     };
 
@@ -487,6 +514,7 @@ $converter = new CommonMarkConverter();
                     });
                 });
             </script>
+
         </div>
     </main>
 
