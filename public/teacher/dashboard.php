@@ -338,7 +338,6 @@ $user_name = $user->getUserName($_SESSION['user_id']);
 
     <div id="addCourseModal" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
         <div class="bg-white rounded-lg shadow-lg w-11/12 md:w-1/2 lg:w-1/3 p-6 max-h-[90vh] overflow-y-auto">
-            <!-- Modal Header -->
             <div class="flex justify-between items-center mb-6">
                 <h2 class="text-xl font-semibold text-gray-900 flex items-center gap-2">
                     <i class="fas fa-plus-circle text-purple-600"></i>
@@ -349,9 +348,7 @@ $user_name = $user->getUserName($_SESSION['user_id']);
                 </button>
             </div>
 
-            <!-- Modal Form -->
-            <form id="courseForm" action="add_course.php" method="POST" enctype="multipart/form-data">
-                <!-- Course Title -->
+            <form id="courseForm" action="../Model/add_course.php" method="POST" enctype="multipart/form-data">
                 <div class="mb-4">
                     <label class="block text-sm font-medium text-gray-700 mb-1">Course Title</label>
                     <div class="relative">
@@ -361,7 +358,6 @@ $user_name = $user->getUserName($_SESSION['user_id']);
                     </div>
                 </div>
 
-                <!-- Course Description -->
                 <div class="mb-4">
                     <label class="block text-sm font-medium text-gray-700 mb-1">Course Description</label>
                     <div class="relative">
@@ -371,7 +367,6 @@ $user_name = $user->getUserName($_SESSION['user_id']);
                     </div>
                 </div>
 
-                <!-- Course Type -->
                 <div class="mb-4">
                     <label class="block text-sm font-medium text-gray-700 mb-1">Course Type</label>
                     <div class="relative">
@@ -386,7 +381,6 @@ $user_name = $user->getUserName($_SESSION['user_id']);
                     </div>
                 </div>
 
-                <!-- Video Fields -->
                 <div id="videoFields" class="hidden mb-4">
                     <div class="mb-4">
                         <label class="block text-sm font-medium text-gray-700 mb-1">Upload Video</label>
@@ -406,7 +400,6 @@ $user_name = $user->getUserName($_SESSION['user_id']);
                     </div>
                 </div>
 
-                <!-- Document Fields -->
                 <div id="docFields" class="hidden mb-4">
                     <div class="mb-4">
                         <label class="block text-sm font-medium text-gray-700 mb-1">Markdown Content</label>
@@ -418,7 +411,6 @@ $user_name = $user->getUserName($_SESSION['user_id']);
                     </div>
                 </div>
 
-                <!-- Thumbnail Upload -->
                 <div class="mb-4">
                     <label class="block text-sm font-medium text-gray-700 mb-1">Thumbnail</label>
                     <div class="relative">
@@ -428,7 +420,6 @@ $user_name = $user->getUserName($_SESSION['user_id']);
                     </div>
                 </div>
 
-                <!-- Category Selection -->
                 <div class="mb-4">
                     <label class="block text-sm font-medium text-gray-700 mb-1">Category</label>
                     <div class="relative">
@@ -447,24 +438,25 @@ $user_name = $user->getUserName($_SESSION['user_id']);
                     </div>
                 </div>
 
-                <!-- Tags Selection -->
                 <div class="mb-6">
-                    <label class="block text-sm font-medium text-gray-700 mb-1">Tags</label>
-                    <div class="relative">
-                        <i class="fas fa-tags absolute left-3 top-3 text-gray-400"></i>
-                        <select name="tags[]" multiple required
-                            class="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent appearance-none">
-                            <?php
-                            $stmt = $pdo->query("SELECT tag_id, tag_name FROM tags");
-                            while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
-                                echo "<option value='{$row['tag_id']}'>{$row['tag_name']}</option>";
-                            }
-                            ?>
-                        </select>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Tags (Max 3)</label>
+                    <div class="flex flex-wrap gap-2 mb-2" id="selectedTags"></div>
+                    <div class="flex flex-wrap gap-2" id="tagOptions">
+                        <?php
+                        $stmt = $pdo->query("SELECT tag_id, tag_name FROM tags");
+                        while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+                            echo "
+                            <div class='tag-option bg-gray-100 text-gray-800 text-sm px-3 py-1 rounded-full cursor-pointer hover:bg-gray-200'
+                                 data-tag-id='{$row['tag_id']}' data-tag-name='{$row['tag_name']}'>
+                                {$row['tag_name']}
+                            </div>
+                        ";
+                        }
+                        ?>
                     </div>
+                    <input type="hidden" name="tags" id="tagsInput">
                 </div>
 
-                <!-- Submit Button -->
                 <button type="submit"
                     class="w-full bg-purple-600 text-white py-2 px-4 rounded-lg hover:bg-purple-700 transition duration-300 flex items-center justify-center gap-2">
                     <i class="fas fa-save"></i>
@@ -475,6 +467,14 @@ $user_name = $user->getUserName($_SESSION['user_id']);
     </div>
 
     <script>
+        function openModal() {
+            document.getElementById('addCourseModal').classList.remove('hidden');
+        }
+
+        function closeModal() {
+            document.getElementById('addCourseModal').classList.add('hidden');
+        }
+
         function toggleCourseFields() {
             const courseType = document.getElementById('courseType').value;
             const videoFields = document.getElementById('videoFields');
@@ -492,12 +492,62 @@ $user_name = $user->getUserName($_SESSION['user_id']);
             }
         }
 
-        function openModal() {
-            document.getElementById('addCourseModal').classList.remove('hidden');
+        const tagOptions = document.querySelectorAll('.tag-option');
+        const selectedTags = document.getElementById('selectedTags');
+        const tagsInput = document.getElementById('tagsInput');
+        let selectedTagIds = [];
+
+        tagOptions.forEach(tag => {
+            tag.addEventListener('click', () => {
+                const tagId = tag.getAttribute('data-tag-id');
+                const tagName = tag.getAttribute('data-tag-name');
+
+                if (selectedTagIds.includes(tagId)) {
+                    selectedTagIds = selectedTagIds.filter(id => id !== tagId);
+                    tag.classList.remove('bg-purple-600', 'text-white');
+                    tag.classList.add('bg-gray-100', 'text-gray-800');
+                } else {
+                    if (selectedTagIds.length >= 3) {
+                        alert('You can only select up to 3 tags.');
+                        return;
+                    }
+                    selectedTagIds.push(tagId);
+                    tag.classList.remove('bg-gray-100', 'text-gray-800');
+                    tag.classList.add('bg-purple-600', 'text-white');
+                }
+
+                updateSelectedTags();
+            });
+        });
+
+        function updateSelectedTags() {
+            selectedTags.innerHTML = '';
+            selectedTagIds.forEach(tagId => {
+                const tagName = document.querySelector(`.tag-option[data-tag-id="${tagId}"]`).getAttribute('data-tag-name');
+                const tagBubble = document.createElement('div');
+                tagBubble.className = 'bg-purple-100 text-purple-800 text-sm px-3 py-1 rounded-full flex items-center gap-2';
+                tagBubble.innerHTML = `
+                ${tagName}
+                <button type="button" onclick="removeTag('${tagId}')" class="text-purple-600 hover:text-purple-800">
+                    <i class="fas fa-times"></i>
+                </button>
+            `;
+                selectedTags.appendChild(tagBubble);
+            });
+
+            tagsInput.value = selectedTagIds.join(',');
         }
 
-        function closeModal() {
-            document.getElementById('addCourseModal').classList.add('hidden');
+        function removeTag(tagId) {
+            selectedTagIds = selectedTagIds.filter(id => id !== tagId);
+
+            const tagOption = document.querySelector(`.tag-option[data-tag-id="${tagId}"]`);
+            if (tagOption) {
+                tagOption.classList.remove('bg-purple-600', 'text-white');
+                tagOption.classList.add('bg-gray-100', 'text-gray-800');
+            }
+
+            updateSelectedTags();
         }
     </script>
 </body>

@@ -117,7 +117,6 @@
                     <p class="text-gray-600">Review and manage teacher requests.</p>
                 </div>
         
-                <!-- Tabs for Pending, Accepted, and Refused Requests -->
                 <div class="mb-8">
                     <div class="flex space-x-4 border-b">
                         <button class="tab-button px-4 py-2 text-purple-800 border-b-2 border-purple-800">Pending</button>
@@ -126,9 +125,7 @@
                     </div>
                 </div>
         
-                <!-- Pending Requests -->
                 <div id="pending-requests" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-                    <!-- Request Card -->
                     <div class="request-card bg-white p-6 rounded-lg shadow-md transition duration-300">
                         <div class="flex items-center space-x-4 mb-4">
                             <img src="../../assets/images/Guest-user.png" alt="User Avatar" class="w-10 h-10 rounded-full">
@@ -150,7 +147,6 @@
                         </div>
                     </div>
         
-                    <!-- Request Card -->
                     <div class="request-card bg-white p-6 rounded-lg shadow-md transition duration-300">
                         <div class="flex items-center space-x-4 mb-4">
                             <img src="../../assets/images/Guest-user.png" alt="User Avatar" class="w-10 h-10 rounded-full">
@@ -173,9 +169,7 @@
                     </div>
                 </div>
         
-                <!-- Accepted Requests -->
                 <div id="accepted-requests" class="hidden grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-                    <!-- Request Card -->
                     <div class="request-card bg-white p-6 rounded-lg shadow-md transition duration-300">
                         <div class="flex items-center space-x-4 mb-4">
                             <img src="../../assets/images/Guest-user.png" alt="User Avatar" class="w-10 h-10 rounded-full">
@@ -193,9 +187,7 @@
                     </div>
                 </div>
         
-                <!-- Refused Requests -->
                 <div id="refused-requests" class="hidden grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-                    <!-- Request Card -->
                     <div class="request-card bg-white p-6 rounded-lg shadow-md transition duration-300">
                         <div class="flex items-center space-x-4 mb-4">
                             <img src="../../assets/images/Guest-user.png" alt="User Avatar" class="w-10 h-10 rounded-full">
@@ -216,7 +208,6 @@
         </main>
         
         <script>
-            // Tab Switching Logic
             const tabs = document.querySelectorAll('.tab-button');
             const pendingSection = document.getElementById('pending-requests');
             const acceptedSection = document.getElementById('accepted-requests');
