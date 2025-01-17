@@ -1,4 +1,7 @@
 <?php
+session_start();
+require '../../config/db.php';
+
 require '../Model/courses-getter-for-non-log.php';
 
 ?>

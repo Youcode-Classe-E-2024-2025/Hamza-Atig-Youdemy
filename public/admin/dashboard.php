@@ -4,11 +4,13 @@ session_start();
 
 require '../../config/db.php';
 require '../Model/check-ad.php';
+require '../Model/courses-getter-for-non-log.php';
 
 ?>
 
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -23,22 +25,27 @@ require '../Model/check-ad.php';
             margin-left: 16px;
             border-left: 2px solid #e5e7eb;
         }
+
         .dropdown:hover .dropdown-content {
             display: block;
         }
+
         .dropdown-content a {
             transition: all 0.3s ease;
         }
+
         .dropdown-content a:hover {
             background: #f3f4f6;
             padding-left: 12px;
         }
+
         .course-card:hover {
             transform: translateY(-5px);
             box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
         }
     </style>
 </head>
+
 <body class="bg-gray-100">
     <div class="flex">
         <header class="sidebar fixed h-screen w-64 bg-white shadow-lg overflow-y-auto">
@@ -49,24 +56,29 @@ require '../Model/check-ad.php';
             <nav class="p-4">
                 <ul class="space-y-2">
                     <li>
-                        <a href="#" class="flex items-center p-3 text-gray-700 hover:bg-purple-50 rounded-lg transition duration-300">
+                        <a href="#"
+                            class="flex items-center p-3 text-gray-700 hover:bg-purple-50 rounded-lg transition duration-300">
                             <i class="fas fa-tachometer-alt text-purple-600 mr-3"></i>
                             Dashboard
                         </a>
                     </li>
                     <li class="dropdown">
-                        <a href="#" class="flex items-center p-3 text-gray-700 hover:bg-purple-50 rounded-lg transition duration-300">
+                        <a href="#"
+                            class="flex items-center p-3 text-gray-700 hover:bg-purple-50 rounded-lg transition duration-300">
                             <i class="fas fa-users text-purple-600 mr-3"></i>
                             Users
                             <i class="fas fa-chevron-down ml-auto text-purple-400"></i>
                         </a>
                         <div class="dropdown-content pl-4">
-                            <a href="./allusers.html" class="block p-2 text-gray-700 rounded-lg"><i class="fas fa-users mr-2"></i>All Users</a>
-                            <a href="./teachers.html" class="block p-2 text-gray-700 rounded-lg"><i class="fas fa-chalkboard-teacher mr-2"></i>Teacher Programe</a>
+                            <a href="./allusers.html" class="block p-2 text-gray-700 rounded-lg"><i
+                                    class="fas fa-users mr-2"></i>All Users</a>
+                            <a href="./teachers.html" class="block p-2 text-gray-700 rounded-lg"><i
+                                    class="fas fa-chalkboard-teacher mr-2"></i>Teacher Programe</a>
                         </div>
                     </li>
                     <li class="dropdown">
-                        <a href="#" class="flex items-center p-3 text-gray-700 hover:bg-purple-50 rounded-lg transition duration-300">
+                        <a href="#"
+                            class="flex items-center p-3 text-gray-700 hover:bg-purple-50 rounded-lg transition duration-300">
                             <i class="fas fa-book-open text-purple-600 mr-3"></i>
                             Courses
                             <i class="fas fa-chevron-down ml-auto text-purple-400"></i>
@@ -84,19 +96,22 @@ require '../Model/check-ad.php';
                         </div>
                     </li>
                     <li>
-                        <a href="#" class="flex items-center p-3 text-gray-700 hover:bg-purple-50 rounded-lg transition duration-300">
+                        <a href="#"
+                            class="flex items-center p-3 text-gray-700 hover:bg-purple-50 rounded-lg transition duration-300">
                             <i class="fas fa-chart-line text-purple-600 mr-3"></i>
                             Analytics
                         </a>
                     </li>
                     <li>
-                        <a href="#" class="flex items-center p-3 text-gray-700 hover:bg-purple-50 rounded-lg transition duration-300">
+                        <a href="#"
+                            class="flex items-center p-3 text-gray-700 hover:bg-purple-50 rounded-lg transition duration-300">
                             <i class="fas fa-cog text-purple-600 mr-3"></i>
                             Settings
                         </a>
                     </li>
                     <li>
-                        <a href="#" class="flex items-center p-3 text-gray-700 hover:bg-purple-50 rounded-lg transition duration-300">
+                        <a href="#"
+                            class="flex items-center p-3 text-gray-700 hover:bg-purple-50 rounded-lg transition duration-300">
                             <i class="fas fa-sign-out-alt text-purple-600 mr-3"></i>
                             Logout
                         </a>
@@ -204,61 +219,25 @@ require '../Model/check-ad.php';
                 <div class="bg-white p-6 rounded-lg shadow-md">
                     <h2 class="text-xl font-semibold text-purple-800 mb-4">All Courses</h2>
                     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-                        <div class="course-card bg-white p-6 rounded-lg shadow-md transition duration-300">
-                            <img src="../../assets/images/CoursesCover/C1.png" alt="Course Image" class="w-full h-40 object-cover rounded-lg mb-4">
-                            <h3 class="text-xl font-semibold text-purple-800 mb-2">Advanced JavaScript</h3>
-                            <p class="text-gray-600 mb-4">Master advanced JavaScript concepts and frameworks.</p>
-                            <div class="flex items-center justify-between mb-4">
-                                <span class="text-sm text-gray-500"><i class="fas fa-users mr-2"></i>1,234 Enrollments</span>
-                                <span class="text-sm text-gray-500"><i class="fas fa-star text-yellow-500 mr-2"></i>4.7</span>
+                        <?php foreach ($courses as $course): ?>
+                            <div class="course-card bg-white p-6 rounded-lg shadow-md transition duration-300">
+                                <img src="../../storage/uploads/course_thumbnails/<?php echo htmlspecialchars($course['thumbnail'], ENT_QUOTES, 'UTF-8'); ?>" alt="Course Image"
+                                    class="w-full h-40 object-cover rounded-lg mb-4">
+                                <h3 class="text-xl font-semibold text-purple-800 mb-2"><?php echo htmlspecialchars($course['title'], ENT_QUOTES, 'UTF-8'); ?></h3>
+                                <p class="text-gray-600 mb-4"><?php echo htmlspecialchars($course['description'], ENT_QUOTES, 'UTF-8'); ?></p>
+                                <div class="flex items-center justify-between mb-4">
+                                    <span class="text-sm text-gray-500"><i class="fas fa-users mr-2"></i>***
+                                        Enrollments</span>
+                                    <span class="text-sm text-gray-500"><i
+                                            class="fas fa-star text-yellow-500 mr-2"></i>4.7</span>
+                                </div>
+                                <div class="flex items-center justify-between">
+                                    <span class="text-sm text-gray-500">Status: <span
+                                            class="text-green-500">Published</span></span>
+                                    <a href="#" class="text-purple-600 hover:text-purple-700">Copyright <i class="far fa-copyright"></i> 2023</a>
+                                </div>
                             </div>
-                            <div class="flex items-center justify-between">
-                                <span class="text-sm text-gray-500">Status: <span class="text-green-500">Published</span></span>
-                                <a href="#" class="text-purple-600 hover:text-purple-700">View Details</a>
-                            </div>
-                        </div>
-
-                        <div class="course-card bg-white p-6 rounded-lg shadow-md transition duration-300">
-                            <img src="../../assets/images/CoursesCover/C3.png" alt="Course Image" class="w-full h-40 object-cover rounded-lg mb-4">
-                            <h3 class="text-xl font-semibold text-purple-800 mb-2">Python for Beginners</h3>
-                            <p class="text-gray-600 mb-4">Learn Python from scratch with hands-on projects.</p>
-                            <div class="flex items-center justify-between mb-4">
-                                <span class="text-sm text-gray-500"><i class="fas fa-users mr-2"></i>2,345 Enrollments</span>
-                                <span class="text-sm text-gray-500"><i class="fas fa-star text-yellow-500 mr-2"></i>4.8</span>
-                            </div>
-                            <div class="flex items-center justify-between">
-                                <span class="text-sm text-gray-500">Status: <span class="text-green-500">Published</span></span>
-                                <a href="#" class="text-purple-600 hover:text-purple-700">View Details</a>
-                            </div>
-                        </div>
-
-                        <div class="course-card bg-white p-6 rounded-lg shadow-md transition duration-300">
-                            <img src="../../assets/images/CoursesCover/C1.png" alt="Course Image" class="w-full h-40 object-cover rounded-lg mb-4">
-                            <h3 class="text-xl font-semibold text-purple-800 mb-2">React Masterclass</h3>
-                            <p class="text-gray-600 mb-4">Build modern web applications with React.</p>
-                            <div class="flex items-center justify-between mb-4">
-                                <span class="text-sm text-gray-500"><i class="fas fa-users mr-2"></i>3,456 Enrollments</span>
-                                <span class="text-sm text-gray-500"><i class="fas fa-star text-yellow-500 mr-2"></i>4.9</span>
-                            </div>
-                            <div class="flex items-center justify-between">
-                                <span class="text-sm text-gray-500">Status: <span class="text-green-500">Published</span></span>
-                                <a href="#" class="text-purple-600 hover:text-purple-700">View Details</a>
-                            </div>
-                        </div>
-
-                        <div class="course-card bg-white p-6 rounded-lg shadow-md transition duration-300">
-                            <img src="../../assets/images/CoursesCover/C2.jpg" alt="Course Image" class="w-full h-40 object-cover rounded-lg mb-4">
-                            <h3 class="text-xl font-semibold text-purple-800 mb-2">Data Science Bootcamp</h3>
-                            <p class="text-gray-600 mb-4">Learn data science with Python, Pandas, and Scikit-learn.</p>
-                            <div class="flex items-center justify-between mb-4">
-                                <span class="text-sm text-gray-500"><i class="fas fa-users mr-2"></i>4,567 Enrollments</span>
-                                <span class="text-sm text-gray-500"><i class="fas fa-star text-yellow-500 mr-2"></i>4.6</span>
-                            </div>
-                            <div class="flex items-center justify-between">
-                                <span class="text-sm text-gray-500">Status: <span class="text-green-500">Published</span></span>
-                                <a href="#" class="text-purple-600 hover:text-purple-700">View Details</a>
-                            </div>
-                        </div>
+                        <?php endforeach; ?>
                     </div>
                 </div>
             </div>
@@ -311,4 +290,5 @@ require '../Model/check-ad.php';
         });
     </script>
 </body>
+
 </html>
