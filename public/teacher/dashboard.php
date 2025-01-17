@@ -213,14 +213,6 @@ $user_name = $user->getUserName($_SESSION['user_id']);
             Dashboard
         </a>
         <a href="#">
-            <i class="fas fa-users"></i>
-            View Enroll Requests
-        </a>
-        <a href="#">
-            <i class="fas fa-book"></i>
-            My Courses
-        </a>
-        <a href="#">
             <i class="fas fa-chart-line"></i>
             Analytics
         </a>
@@ -451,14 +443,6 @@ $user_name = $user->getUserName($_SESSION['user_id']);
                         <div class="relative">
                             <i class="fas fa-video absolute left-3 top-3 text-gray-400"></i>
                             <input type="file" name="video" accept="video/*"
-                                class="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent">
-                        </div>
-                    </div>
-                    <div class="mb-4">
-                        <label class="block text-sm font-medium text-gray-700 mb-1">Video URL</label>
-                        <div class="relative">
-                            <i class="fas fa-link absolute left-3 top-3 text-gray-400"></i>
-                            <input type="text" name="video_url" placeholder="Enter video URL (if hosted externally)"
                                 class="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent">
                         </div>
                     </div>

@@ -143,6 +143,61 @@ $converter = new CommonMarkConverter();
         .delay-200 {
             animation-delay: 0.2s;
         }
+
+        .markdown-content * {
+            all: unset;
+            display: revert;
+        }
+
+        .markdown-content h1 {
+            font-size: 2rem;
+            font-weight: bold;
+        }
+
+        .markdown-content h2 {
+            font-size: 1.75rem;
+            font-weight: bold;
+        }
+
+        .markdown-content h3 {
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+
+        .markdown-content p {
+            font-size: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .markdown-content a {
+            color: #2563eb;
+            text-decoration: underline;
+        }
+
+        .markdown-content ul,
+        .markdown-content ol {
+            padding-left: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .markdown-content table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 1rem;
+        }
+
+        .markdown-content table th,
+        .markdown-content table td {
+            border: 1px solid #ddd;
+            padding: 0.5rem;
+        }
+
+        .markdown-content pre {
+            background: #f3f4f6;
+            padding: 1rem;
+            border-radius: 0.5rem;
+            overflow-x: auto;
+        }
     </style>
 </head>
 
@@ -426,16 +481,16 @@ $converter = new CommonMarkConverter();
             </div>
 
             <div id="courseModal"
-                class="fixed inset-0 bg-black bg-opacity-50 hidden justify-center items-center p-4 z-50">
-                <div class="bg-white rounded-lg w-full max-w-3xl p-6">
+                class="fixed inset-0 bg-black bg-opacity-50 h-screen w-screen hidden justify-center items-center z-50">
+                <div class="bg-white rounded-lg h-full w-full p-6 flex flex-col">
                     <div class="flex justify-between items-center mb-4">
                         <h3 class="text-xl font-bold text-gray-900" id="modalTitle"></h3>
                         <button id="closeModal" class="text-gray-500 hover:text-gray-700">
                             <i class="fas fa-times"></i>
                         </button>
                     </div>
-                    <div id="modalContent" class="mb-4"></div>
-                    <div class="flex justify-end">
+                    <div id="modalContent" class="flex-grow overflow-y-auto"></div>
+                    <div class="flex justify-end mt-4">
                         <button id="finishButton"
                             class="bg-green-600 text-white py-2 px-4 rounded-lg hover:bg-green-700 transition-colors">
                             Finish
@@ -443,6 +498,7 @@ $converter = new CommonMarkConverter();
                     </div>
                 </div>
             </div>
+
 
             <script>
                 function openModal(courseId, courseTitle) {
