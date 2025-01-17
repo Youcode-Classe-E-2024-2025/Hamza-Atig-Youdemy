@@ -18,7 +18,7 @@ class User
 
     public function isStudent()
     {
-        return isset($_SESSION['role']) && $_SESSION['role'] === 'admin';
+        return isset($_SESSION['admin_role']) && $_SESSION['admin_role'] === 'admin';
     }
 
     public function getUserName($user_id)

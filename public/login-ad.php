@@ -37,7 +37,7 @@ class User
         $_SESSION['admin_role'] = $user['admin_role'];
 
         if ($user['admin_role'] === 'superadmin' || $user['admin_role'] === 'admin') {
-            header("Location: admin/dashboard.html");
+            header("Location: admin/dashboard.php");
             exit();
         } else {
             return "Invalid admin account.";
