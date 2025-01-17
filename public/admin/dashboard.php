@@ -132,7 +132,12 @@ require '../Model/courses-getter-for-non-log.php';
                         <div class="flex items-center justify-between">
                             <div>
                                 <p class="text-gray-500">Total Users</p>
-                                <p class="text-3xl font-bold text-purple-800">12,345</p>
+                                <?php
+                                $stmt = $database->connect()->prepare("SELECT COUNT(*) FROM users");
+                                $stmt->execute();
+                                $total_users = $stmt->fetchColumn();
+                                ?>
+                                <p class="text-3xl font-bold text-purple-800"><?php echo $total_users; ?></p>
                             </div>
                             <i class="fas fa-users text-4xl text-purple-500"></i>
                         </div>
