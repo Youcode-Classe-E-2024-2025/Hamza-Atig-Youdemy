@@ -53,3 +53,10 @@ CREATE TABLE enrollments (
     FOREIGN KEY (user_id) REFERENCES users(user_id) ON DELETE CASCADE,
     FOREIGN KEY (course_id) REFERENCES courses(course_id) ON DELETE CASCADE
 );
+
+CREATE TABLE admin (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    log VARCHAR(50) NOT NULL UNIQUE,
+    pass VARCHAR(255) NOT NULL,
+    admin_role ENUM('superadmin', 'admin') NOT NULL DEFAULT 'admin'
+);

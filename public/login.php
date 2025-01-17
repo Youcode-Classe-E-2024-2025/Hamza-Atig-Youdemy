@@ -128,6 +128,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     Don't have an account?
                     <a href="signin.php" class="text-purple-600 hover:text-purple-700">Sign up</a>
                 </p>
+                <p class="text-sm text-gray-600">
+                    You are a admin?
+                    <a href="login-ad.php" class="text-purple-600 hover:text-purple-700">Go To Admin</a>
+                </p>
             </div>
             <a href="index.php" class="min-[980px]:hidden flex items-center mt-6 text-black transition duration-300">
                 <i class="fas fa-arrow-left mr-2"></i> Back to Home
