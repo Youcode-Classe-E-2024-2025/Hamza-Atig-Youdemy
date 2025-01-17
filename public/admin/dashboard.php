@@ -1,3 +1,12 @@
+<?php
+
+session_start();
+
+require '../../config/db.php';
+require '../Model/check-ad.php';
+
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
