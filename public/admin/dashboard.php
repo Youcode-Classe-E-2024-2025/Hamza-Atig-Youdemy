@@ -147,7 +147,12 @@ require '../Model/courses-getter-for-non-log.php';
                         <div class="flex items-center justify-between">
                             <div>
                                 <p class="text-gray-500">Total Courses</p>
-                                <p class="text-3xl font-bold text-purple-800">1,234</p>
+                                <?php
+                                $stmt = $database->connect()->prepare("SELECT COUNT(*) FROM courses");
+                                $stmt->execute();
+                                $total_courses = $stmt->fetchColumn();
+                                ?>
+                                <p class="text-3xl font-bold text-purple-800"><?php echo $total_courses; ?></p>
                             </div>
                             <i class="fas fa-book-open text-4xl text-purple-500"></i>
                         </div>
