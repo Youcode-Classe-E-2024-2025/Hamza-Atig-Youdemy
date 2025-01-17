@@ -1,3 +1,8 @@
+<?php
+require '../Model/courses-getter-for-non-log.php';
+
+?>
+
 <!DOCTYPE html>
 <html lang="en" class="scroll-smooth">
 
@@ -293,209 +298,51 @@
     </header>
 
     <main class="p-8 bg-gray-50 min-h-screen mt-28">
-        <div class="max-w-7xl mx-auto flex gap-8">
-            <aside class="w-72 bg-white rounded-xl shadow-lg p-6 sticky top-28 max-[650px]:hidden">
-                <h2 class="text-lg font-bold text-gray-900 mb-6">Filters</h2>
-                <div class="space-y-6">
-                    <div>
-                        <h3 class="text-sm font-semibold text-gray-700 mb-3">Category</h3>
-                        <ul class="space-y-2">
-                            <li>
-                                <label class="flex items-center text-sm text-gray-600 hover:text-purple-600 cursor-pointer">
-                                    <input type="checkbox" class="mr-2 rounded text-purple-600 focus:ring-purple-600">
-                                    Web Development
-                                </label>
-                            </li>
-                            <li>
-                                <label class="flex items-center text-sm text-gray-600 hover:text-purple-600 cursor-pointer">
-                                    <input type="checkbox" class="mr-2 rounded text-purple-600 focus:ring-purple-600">
-                                    Data Science
-                                </label>
-                            </li>
-                            <li>
-                                <label class="flex items-center text-sm text-gray-600 hover:text-purple-600 cursor-pointer">
-                                    <input type="checkbox" class="mr-2 rounded text-purple-600 focus:ring-purple-600">
-                                    Mobile Development
-                                </label>
-                            </li>
-                            <li>
-                                <label class="flex items-center text-sm text-gray-600 hover:text-purple-600 cursor-pointer">
-                                    <input type="checkbox" class="mr-2 rounded text-purple-600 focus:ring-purple-600">
-                                    UI/UX Design
-                                </label>
-                            </li>
-                        </ul>
-                    </div>
-                    <div>
-                        <h3 class="text-sm font-semibold text-gray-700 mb-3">Rating</h3>
-                        <ul class="space-y-2">
-                            <li>
-                                <label class="flex items-center text-sm text-gray-600 hover:text-purple-600 cursor-pointer">
-                                    <input type="checkbox" class="mr-2 rounded text-purple-600 focus:ring-purple-600">
-                                    4 Stars & Above
-                                </label>
-                            </li>
-                            <li>
-                                <label class="flex items-center text-sm text-gray-600 hover:text-purple-600 cursor-pointer">
-                                    <input type="checkbox" class="mr-2 rounded text-purple-600 focus:ring-purple-600">
-                                    3 Stars & Above
-                                </label>
-                            </li>
-                        </ul>
-                    </div>
-                    <div>
-                        <h3 class="text-sm font-semibold text-gray-700 mb-3">Price</h3>
-                        <ul class="space-y-2">
-                            <li>
-                                <label class="flex items-center text-sm text-gray-600 hover:text-purple-600 cursor-pointer">
-                                    <input type="checkbox" class="mr-2 rounded text-purple-600 focus:ring-purple-600">
-                                    Free
-                                </label>
-                            </li>
-                            <li>
-                                <label class="flex items-center text-sm text-gray-600 hover:text-purple-600 cursor-pointer">
-                                    <input type="checkbox" class="mr-2 rounded text-purple-600 focus:ring-purple-600">
-                                    Paid
-                                </label>
-                            </li>
-                        </ul>
-                    </div>
-                    <div>
-                        <h3 class="text-sm font-semibold text-gray-700 mb-3">Duration</h3>
-                        <ul class="space-y-2">
-                            <li>
-                                <label class="flex items-center text-sm text-gray-600 hover:text-purple-600 cursor-pointer">
-                                    <input type="checkbox" class="mr-2 rounded text-purple-600 focus:ring-purple-600">
-                                    Less than 1 hour
-                                </label>
-                            </li>
-                            <li>
-                                <label class="flex items-center text-sm text-gray-600 hover:text-purple-600 cursor-pointer">
-                                    <input type="checkbox" class="mr-2 rounded text-purple-600 focus:ring-purple-600">
-                                    1-3 hours
-                                </label>
-                            </li>
-                            <li>
-                                <label class="flex items-center text-sm text-gray-600 hover:text-purple-600 cursor-pointer">
-                                    <input type="checkbox" class="mr-2 rounded text-purple-600 focus:ring-purple-600">
-                                    3+ hours
-                                </label>
-                            </li>
-                        </ul>
-                    </div>
-                    <button class="w-full text-center bg-purple-600 text-white py-2 px-4 rounded-lg hover:bg-purple-700 transition-colors">
-                        Reset Filters
-                    </button>
-                </div>
-            </aside>
-            <div class="flex-1">
-                <!-- Course Card 1 -->
-                <div class="bg-white rounded-xl shadow-lg overflow-hidden transition-shadow hover:shadow-xl mb-6">
-                    <div class="flex flex-row max-[1000px]:flex-col">
-                        <img src="../../assets/images/CoursesCover/C3.png" alt="" class="w-[40%] max-[1000px]:w-full">
-                        <div class="w-[60%] p-6 max-[1000px]:w-full">
-                            <h3 class="text-xl font-bold text-gray-900 mb-2">React Masterclass</h3>
-                            <p class="text-sm text-gray-600 mb-4">
-                                Build modern web apps with React. Learn hooks, state management, and more.
-                            </p>
-                            <div class="flex items-center mb-4">
-                                <img src="../../assets/images/Guest-user.png" alt="Instructor" class="w-10 h-10 rounded-full mr-3">
-                                <div>
-                                    <p class="text-sm font-medium text-gray-900">John Doe</p>
-                                    <p class="text-xs text-gray-500">Senior Frontend Developer</p>
+        <div class="flex-1">
+            <div class="grid grid-cols-1 gap-6">
+                <?php foreach ($courses as $course): ?>
+                    <div class="bg-white rounded-xl shadow-lg overflow-hidden transition-shadow hover:shadow-xl mb-6">
+                        <div class="flex flex-row max-[1000px]:flex-col">
+                            <img src="../../storage/uploads/course_thumbnails/<?php echo htmlspecialchars($course['thumbnail'], ENT_QUOTES, 'UTF-8'); ?>"
+                                alt="Course Thumbnail" class="w-[40%] max-[1000px]:w-full">
+                            <div class="w-[60%] p-6 max-[1000px]:w-full">
+                                <h3 class="text-xl font-bold text-gray-900 mb-2">
+                                    <?php echo htmlspecialchars($course['title'], ENT_QUOTES, 'UTF-8'); ?>
+                                </h3>
+                                <p class="text-sm text-gray-600 mb-4">
+                                    <?php echo htmlspecialchars($course['description'], ENT_QUOTES, 'UTF-8'); ?>
+                                </p>
+                                <div class="flex items-center mb-4">
+                                    <img src="../../assets/images/Guest-user.png" alt="Instructor"
+                                        class="w-10 h-10 rounded-full mr-3">
+                                    <div>
+                                        <p class="text-sm font-medium text-gray-900">
+                                            <?php echo htmlspecialchars($course['teacher_name'], ENT_QUOTES, 'UTF-8'); ?>
+                                        </p>
+                                        <p class="text-xs text-gray-500">Instructor</p>
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="flex items-center mb-4">
-                                <div class="flex text-yellow-400">
-                                    <i class="fas fa-star"></i>
-                                    <i class="fas fa-star"></i>
-                                    <i class="fas fa-star"></i>
-                                    <i class="fas fa-star"></i>
-                                    <i class="fas fa-star-half-alt"></i>
+                                <div class="flex items-center mb-4">
+                                    <div class="flex text-yellow-400">
+                                        <i class="fas fa-star"></i>
+                                        <i class="fas fa-star"></i>
+                                        <i class="fas fa-star"></i>
+                                        <i class="fas fa-star"></i>
+                                        <i class="fas fa-star-half-alt"></i>
+                                    </div>
+                                    <span class="text-sm text-gray-600 ml-2">4.5 (1.2k reviews)</span>
                                 </div>
-                                <span class="text-sm text-gray-600 ml-2">4.5 (1.2k reviews)</span>
-                            </div>
-                            <div class="flex items-center justify-between">
-                                <span class="text-sm font-semibold text-purple-600">$49.99</span>
-                                <a href="#" class="text-center bg-purple-600 text-white py-2 px-4 rounded-lg hover:bg-purple-700 transition-colors">
-                                    Enroll Now
-                                </a>
+                                <div class="flex items-center justify-between">
+                                    <span class="text-sm font-semibold text-purple-600">Free</span>
+                                    <a href="../login.php"
+                                        class="text-center bg-purple-600 text-white py-2 px-4 rounded-lg hover:bg-purple-700 transition-colors">
+                                        Enroll Now
+                                    </a>
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
-    
-                <!-- Course Card 2 -->
-                <div class="bg-white rounded-xl shadow-lg overflow-hidden transition-shadow hover:shadow-xl mb-6">
-                    <div class="flex flex-row max-[1000px]:flex-col">
-                        <img src="../../assets/images/CoursesCover/C2.jpg" alt="" class="w-[40%] max-[1000px]:w-full">
-                        <div class="w-[60%] p-6 max-[1000px]:w-full">
-                            <h3 class="text-xl font-bold text-gray-900 mb-2">Data Science Essentials</h3>
-                            <p class="text-sm text-gray-600 mb-4">
-                                Master Python, Pandas, and Machine Learning for data analysis.
-                            </p>
-                            <div class="flex items-center mb-4">
-                                <img src="../../assets/images/Guest-user.png" alt="Instructor" class="w-10 h-10 rounded-full mr-3">
-                                <div>
-                                    <p class="text-sm font-medium text-gray-900">Jane Smith</p>
-                                    <p class="text-xs text-gray-500">Data Scientist</p>
-                                </div>
-                            </div>
-                            <div class="flex items-center mb-4">
-                                <div class="flex text-yellow-400">
-                                    <i class="fas fa-star"></i>
-                                    <i class="fas fa-star"></i>
-                                    <i class="fas fa-star"></i>
-                                    <i class="fas fa-star"></i>
-                                    <i class="fas fa-star"></i>
-                                </div>
-                                <span class="text-sm text-gray-600 ml-2">5.0 (2.3k reviews)</span>
-                            </div>
-                            <div class="flex items-center justify-between">
-                                <span class="text-sm font-semibold text-purple-600">$59.99</span>
-                                <a href="#" class="text-center bg-purple-600 text-white py-2 px-4 rounded-lg hover:bg-purple-700 transition-colors">
-                                    Enroll Now
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-    
-                <!-- Course Card 3 -->
-                <div class="bg-white rounded-xl shadow-lg overflow-hidden transition-shadow hover:shadow-xl mb-6">
-                    <div class="flex flex-row max-[1000px]:flex-col">
-                        <img src="../../assets/images/CoursesCover/C1.png" alt="" class="w-[40%] max-[1000px]:w-full">
-                        <div class="w-[60%] p-6 max-[1000px]:w-full">
-                            <h3 class="text-xl font-bold text-gray-900 mb-2">Flutter Development</h3>
-                            <p class="text-sm text-gray-600 mb-4">
-                                Build cross-platform mobile apps with Flutter and Dart.
-                            </p>
-                            <div class="flex items-center mb-4">
-                                <img src="../../assets/images/Guest-user.png" alt="Instructor" class="w-10 h-10 rounded-full mr-3">
-                                <div>
-                                    <p class="text-sm font-medium text-gray-900">Alex Johnson</p>
-                                    <p class="text-xs text-gray-500">Mobile Developer</p>
-                                </div>
-                            </div>
-                            <div class="flex items-center mb-4">
-                                <div class="flex text-yellow-400">
-                                    <i class="fas fa-star"></i>
-                                    <i class="fas fa-star"></i>
-                                    <i class="fas fa-star"></i>
-                                    <i class="fas fa-star"></i>
-                                    <i class="fas fa-star"></i>
-                                </div>
-                                <span class="text-sm text-gray-600 ml-2">4.8 (1.8k reviews)</span>
-                            </div>
-                            <div class="flex items-center justify-between">
-                                <span class="text-sm font-semibold text-purple-600">$39.99</span>
-                                <a href="#" class="text-center bg-purple-600 text-white py-2 px-4 rounded-lg hover:bg-purple-700 transition-colors">
-                                    Enroll Now
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                <?php endforeach; ?>
             </div>
         </div>
     </main>

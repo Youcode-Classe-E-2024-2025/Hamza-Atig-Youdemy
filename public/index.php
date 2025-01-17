@@ -292,7 +292,7 @@
                         your career and personal goals at your own pace.
                     </p>
                     <div class="flex justify-center gap-4">
-                        <a href="#"
+                        <a href="courses/allcourses.php"
                             class="bg-purple-600 text-white px-8 py-3 rounded-lg font-semibold hover:bg-purple-700 transition duration-300">
                             Explore Courses
                         </a>
@@ -357,7 +357,7 @@
                                 class="text-purple-600 font-semibold hover:text-purple-700 transition duration-300 flex items-center">
                                 <i class="fas fa-info-circle mr-2"></i> Learn More
                             </a>
-                            <a href="#"
+                            <a href="login.php"
                                 class="bg-purple-600 text-white px-4 py-2 rounded-lg font-semibold hover:bg-purple-700 transition duration-300 flex items-center">
                                 <i class="fas fa-user-plus mr-2"></i> Enroll Now
                             </a>
@@ -377,7 +377,7 @@
                                 class="text-purple-600 font-semibold hover:text-purple-700 transition duration-300 flex items-center">
                                 <i class="fas fa-info-circle mr-2"></i> Learn More
                             </a>
-                            <a href="#"
+                            <a href="login.php"
                                 class="bg-purple-600 text-white px-4 py-2 rounded-lg font-semibold hover:bg-purple-700 transition duration-300 flex items-center">
                                 <i class="fas fa-user-plus mr-2"></i> Enroll Now
                             </a>
@@ -397,7 +397,7 @@
                                 class="text-purple-600 font-semibold hover:text-purple-700 transition duration-300 flex items-center">
                                 <i class="fas fa-info-circle mr-2"></i> Learn More
                             </a>
-                            <a href="#"
+                            <a href="login.php"
                                 class="bg-purple-600 text-white px-4 py-2 rounded-lg font-semibold hover:bg-purple-700 transition duration-300 flex items-center">
                                 <i class="fas fa-user-plus mr-2"></i> Enroll Now
                             </a>
