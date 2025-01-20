@@ -94,7 +94,7 @@ require '../Model/AdminUserManager.php';
                         </a>
                     </li>
                     <li>
-                        <a href="#" class="flex items-center p-3 text-gray-700 hover:bg-purple-50 rounded-lg transition duration-300">
+                        <a href="../logout.php" class="flex items-center p-3 text-gray-700 hover:bg-purple-50 rounded-lg transition duration-300">
                             <i class="fas fa-sign-out-alt text-purple-600 mr-3"></i>
                             Logout
                         </a>
