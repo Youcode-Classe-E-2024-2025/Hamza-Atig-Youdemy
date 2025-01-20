@@ -84,10 +84,7 @@ require '../Model/courses-getter-for-non-log.php';
                             <i class="fas fa-chevron-down ml-auto text-purple-400"></i>
                         </a>
                         <div class="dropdown-content pl-4">
-                            <a href="#" class="block p-2 text-gray-700 rounded-lg">
-                                <i class="fas fa-book mr-2"></i> All Courses
-                            </a>
-                            <a href="#" class="block p-2 text-gray-700 rounded-lg">
+                            <a href="add-tag.php" class="block p-2 text-gray-700 rounded-lg">
                                 <i class="fas fa-tag mr-2"></i> Add New Tag
                             </a>
                             <a href="#" class="block p-2 text-gray-700 rounded-lg">

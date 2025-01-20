@@ -57,7 +57,7 @@ require '../Model/teacher_request.php';
             <nav class="p-4">
                 <ul class="space-y-2">
                     <li>
-                        <a href="./dashboard.html"
+                        <a href="./dashboard.php"
                             class="flex items-center p-3 text-gray-700 hover:bg-purple-50 rounded-lg transition duration-300">
                             <i class="fas fa-tachometer-alt text-purple-600 mr-3"></i>
                             Dashboard
@@ -85,10 +85,7 @@ require '../Model/teacher_request.php';
                             <i class="fas fa-chevron-down ml-auto text-purple-400"></i>
                         </a>
                         <div class="dropdown-content pl-4">
-                            <a href="#" class="block p-2 text-gray-700 rounded-lg">
-                                <i class="fas fa-book mr-2"></i> All Courses
-                            </a>
-                            <a href="#" class="block p-2 text-gray-700 rounded-lg">
+                            <a href="add-tag.php" class="block p-2 text-gray-700 rounded-lg">
                                 <i class="fas fa-tag mr-2"></i> Add New Tag
                             </a>
                             <a href="#" class="block p-2 text-gray-700 rounded-lg">

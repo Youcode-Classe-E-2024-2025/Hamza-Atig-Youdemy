@@ -1,6 +1,6 @@
-<?php
+<?php 
 
-class TeacherRequest {
+class AdminUserManager {
     private $db;
 
     public function __construct() {
@@ -8,14 +8,14 @@ class TeacherRequest {
         $this->db = $database->connect();
     }
 
-    public function getPendingTeachers() {
-        $query = "SELECT * FROM users WHERE role = 'teacher' AND status = 'pending'";
+    public function getActiveUsers() {
+        $query = "SELECT * FROM users";
         $stmt = $this->db->prepare($query);
         $stmt->execute();
         return $stmt->fetchAll();
     }
 
-    public function updateStatus($user_id, $status) {
+    public function updateUserStatus($user_id, $status) {
         $query = "UPDATE users SET status = :status WHERE user_id = :user_id";
         $stmt = $this->db->prepare($query);
         $stmt->bindParam(':status', $status);
@@ -24,13 +24,13 @@ class TeacherRequest {
     }
 }
 
-$teacherRequest = new TeacherRequest();
+$adminUserManager = new AdminUserManager();
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $user_id = $_POST['user_id'];
     $status = $_POST['status'];
 
-    if ($teacherRequest->updateStatus($user_id, $status)) {
+    if ($adminUserManager->updateUserStatus($user_id, $status)) {
         header('Location: ' . $_SERVER['PHP_SELF']);
         exit;
     } else {
@@ -38,6 +38,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 }
 
-$pendingTeachers = $teacherRequest->getPendingTeachers();
+$activeUsers = $adminUserManager->getActiveUsers();
 
 ?>

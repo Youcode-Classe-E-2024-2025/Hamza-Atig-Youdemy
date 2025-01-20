@@ -5,6 +5,7 @@ session_start();
 require '../../config/db.php';
 require '../Model/check-ad.php';
 
+require '../Model/AdminUserManager.php';
 ?>
 
 <!DOCTYPE html>
@@ -49,7 +50,7 @@ require '../Model/check-ad.php';
             <nav class="p-4">
                 <ul class="space-y-2">
                     <li>
-                        <a href="./dashboard.html" class="flex items-center p-3 text-gray-700 hover:bg-purple-50 rounded-lg transition duration-300">
+                        <a href="./dashboard.php" class="flex items-center p-3 text-gray-700 hover:bg-purple-50 rounded-lg transition duration-300">
                             <i class="fas fa-tachometer-alt text-purple-600 mr-3"></i>
                             Dashboard
                         </a>
@@ -61,8 +62,8 @@ require '../Model/check-ad.php';
                             <i class="fas fa-chevron-down ml-auto text-purple-400"></i>
                         </a>
                         <div class="dropdown-content pl-4">
-                            <a href="./allusers.html" class="block p-2 text-gray-700 rounded-lg"><i class="fas fa-users mr-2"></i>All Users</a>
-                            <a href="./teachers.html" class="block p-2 text-gray-700 rounded-lg"><i class="fas fa-chalkboard-teacher mr-2"></i>Teacher Programe</a>
+                            <a href="./allusers.php" class="block p-2 text-gray-700 rounded-lg"><i class="fas fa-users mr-2"></i>All Users</a>
+                            <a href="./teachers.php" class="block p-2 text-gray-700 rounded-lg"><i class="fas fa-chalkboard-teacher mr-2"></i>Teacher Programe</a>
                         </div>
                     </li>
                     <li class="dropdown">
@@ -72,10 +73,7 @@ require '../Model/check-ad.php';
                             <i class="fas fa-chevron-down ml-auto text-purple-400"></i>
                         </a>
                         <div class="dropdown-content pl-4">
-                            <a href="#" class="block p-2 text-gray-700 rounded-lg">
-                                <i class="fas fa-book mr-2"></i> All Courses
-                            </a>
-                            <a href="#" class="block p-2 text-gray-700 rounded-lg">
+                            <a href="add-tag.php" class="block p-2 text-gray-700 rounded-lg">
                                 <i class="fas fa-tag mr-2"></i> Add New Tag
                             </a>
                             <a href="#" class="block p-2 text-gray-700 rounded-lg">
@@ -112,121 +110,44 @@ require '../Model/check-ad.php';
                     <p class="text-gray-600">Manage all users, ban/unban accounts, and handle copyright issues.</p>
                 </div>
 
-                <div class="mb-8 flex items-center justify-between">
-                    <div class="flex items-center space-x-4">
-                        <input type="text" placeholder="Search users..." class="p-2 border rounded-lg w-64">
-                        <select class="p-2 border rounded-lg">
-                            <option>All Users</option>
-                            <option>Active Users</option>
-                            <option>Banned Users</option>
-                        </select>
-                    </div>
-                </div>
-
                 <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+                    <?php foreach ($activeUsers as $user): ?>
                     <div class="user-card bg-white p-6 rounded-lg shadow-md transition duration-300">
                         <div class="flex items-center space-x-4 mb-4">
                             <img src="../../assets/images/Guest-user.png" alt="User Avatar" class="w-10 h-10 rounded-full">
                             <div>
-                                <h3 class="text-lg font-semibold text-purple-800">John Doe</h3>
-                                <p class="text-sm text-gray-500">john.doe@example.com</p>
+                                <h3 class="text-lg font-semibold text-purple-800"><?php echo htmlspecialchars($user['username'], ENT_QUOTES, 'UTF-8'); ?></h3>
+                                <p class="text-sm text-gray-500"><?php echo htmlspecialchars($user['email'], ENT_QUOTES, 'UTF-8'); ?></p>
                             </div>
                         </div>
                         <div class="flex items-center justify-between mb-4">
-                            <span class="text-sm text-gray-500">Status: <span
-                                    class="text-green-500">Active</span></span>
-                            <span class="text-sm text-gray-500">Role: <span
-                                    class="text-purple-600">Student</span></span>
+                            <span class="text-sm text-gray-500">Status: <span class="text-green-500">Active</span></span>
+                            <span class="text-sm text-gray-500">Role: <span class="text-purple-600"><?php echo htmlspecialchars($user['role'], ENT_QUOTES, 'UTF-8'); ?></span></span>
                         </div>
                         <div class="flex items-center justify-between">
-                            <button class="text-red-500 hover:text-red-700">
-                                <i class="fas fa-ban"></i> Ban
-                            </button>
-                            <button class="text-gray-600 hover:text-gray-800">
-                                <i class="fas fa-ellipsis-v"></i>
-                            </button>
+                            <?php if ($user['status'] === 'suspended'): ?>
+                                <form action="" method="POST" class="inline">
+                                    <input type="hidden" name="user_id" value="<?php echo $user['user_id']; ?>">
+                                    <input type="hidden" name="status" value="active">
+                                    <button type="submit" class="text-green-500 hover:text-green-700">
+                                        <i class="fas fa-check"></i> Unban
+                                    </button>
+                                </form>
+                            <?php else: ?>
+                                <form action="" method="POST" class="inline">
+                                    <input type="hidden" name="user_id" value="<?php echo $user['user_id']; ?>">
+                                    <input type="hidden" name="status" value="suspended">
+                                    <button type="submit" class="text-red-500 hover:text-red-700">
+                                        <i class="fas fa-ban"></i> Ban
+                                    </button>
+                                </form>
+                            <?php endif; ?>
                         </div>
                     </div>
-
-                    <div class="user-card bg-white p-6 rounded-lg shadow-md transition duration-300">
-                        <div class="flex items-center space-x-4 mb-4">
-                            <img src="../../assets/images/Guest-user.png" alt="User Avatar" class="w-10 h-10 rounded-full">
-                            <div>
-                                <h3 class="text-lg font-semibold text-purple-800">Jane Smith</h3>
-                                <p class="text-sm text-gray-500">jane.smith@example.com</p>
-                            </div>
-                        </div>
-                        <div class="flex items-center justify-between mb-4">
-                            <span class="text-sm text-gray-500">Status: <span class="text-red-500">Banned</span></span>
-                            <span class="text-sm text-gray-500">Role: <span
-                                    class="text-purple-600">Student</span></span>
-                        </div>
-                        <div class="flex items-center justify-between">
-                            <button class="text-green-500 hover:text-green-700">
-                                <i class="fas fa-check"></i> Unban
-                            </button>
-                            <button class="text-gray-600 hover:text-gray-800">
-                                <i class="fas fa-ellipsis-v"></i>
-                            </button>
-                        </div>
-                    </div>
-
-                    <div class="user-card bg-white p-6 rounded-lg shadow-md transition duration-300">
-                        <div class="flex items-center space-x-4 mb-4">
-                            <img src="../../assets/images/Guest-user.png" alt="User Avatar" class="w-10 h-10 rounded-full">
-                            <div>
-                                <h3 class="text-lg font-semibold text-purple-800">Alice Johnson</h3>
-                                <p class="text-sm text-gray-500">alice.johnson@example.com</p>
-                            </div>
-                        </div>
-                        <div class="flex items-center justify-between mb-4">
-                            <span class="text-sm text-gray-500">Status: <span
-                                    class="text-green-500">Active</span></span>
-                            <span class="text-sm text-gray-500">Role: <span class="text-purple-600">Enseignant</span></span>
-                        </div>
-                        <div class="flex items-center justify-between">
-                            <button class="text-red-500 hover:text-red-700">
-                                <i class="fas fa-ban"></i> Ban
-                            </button>
-                            <button class="text-purple-600 hover:text-purple-700">
-                                <i class="fas fa-copyright"></i> Copyright
-                            </button>
-                            <button class="text-gray-600 hover:text-gray-800">
-                                <i class="fas fa-ellipsis-v"></i>
-                            </button>
-                        </div>
-                    </div>
-
-                    <div class="user-card bg-white p-6 rounded-lg shadow-md transition duration-300">
-                        <div class="flex items-center space-x-4 mb-4">
-                            <img src="../../assets/images/Guest-user.png" alt="User Avatar" class="w-10 h-10 rounded-full">
-                            <div>
-                                <h3 class="text-lg font-semibold text-purple-800">Bob Brown</h3>
-                                <p class="text-sm text-gray-500">bob.brown@example.com</p>
-                            </div>
-                        </div>
-                        <div class="flex items-center justify-between mb-4">
-                            <span class="text-sm text-gray-500">Status: <span
-                                    class="text-green-500">Active</span></span>
-                            <span class="text-sm text-gray-500">Role: <span
-                                    class="text-purple-600">Enseignant</span></span>
-                        </div>
-                        <div class="flex items-center justify-between">
-                            <button class="text-red-500 hover:text-red-700">
-                                <i class="fas fa-ban"></i> Ban
-                            </button>
-                            <button class="text-purple-600 hover:text-purple-700">
-                                <i class="fas fa-copyright"></i> Copyright
-                            </button>
-                            <button class="text-gray-600 hover:text-gray-800">
-                                <i class="fas fa-ellipsis-v"></i>
-                            </button>
-                        </div>
-                    </div>
+                    <?php endforeach; ?>
                 </div>
             </div>
         </main>
     </div>
 </body>
-
 </html>
