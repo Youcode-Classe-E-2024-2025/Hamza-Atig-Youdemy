@@ -70,9 +70,9 @@ require '../Model/courses-getter-for-non-log.php';
                             <i class="fas fa-chevron-down ml-auto text-purple-400"></i>
                         </a>
                         <div class="dropdown-content pl-4">
-                            <a href="./allusers.html" class="block p-2 text-gray-700 rounded-lg"><i
+                            <a href="./allusers.php" class="block p-2 text-gray-700 rounded-lg"><i
                                     class="fas fa-users mr-2"></i>All Users</a>
-                            <a href="./teachers.html" class="block p-2 text-gray-700 rounded-lg"><i
+                            <a href="./teachers.php" class="block p-2 text-gray-700 rounded-lg"><i
                                     class="fas fa-chalkboard-teacher mr-2"></i>Teacher Programe</a>
                         </div>
                     </li>
@@ -162,7 +162,7 @@ require '../Model/courses-getter-for-non-log.php';
                         <div class="flex items-center justify-between">
                             <div>
                                 <p class="text-gray-500">Total Revenue</p>
-                                <p class="text-3xl font-bold text-purple-800">$123,456</p>
+                                <p class="text-3xl font-bold text-purple-800">$0</p>
                             </div>
                             <i class="fas fa-dollar-sign text-4xl text-purple-500"></i>
                         </div>
@@ -172,7 +172,7 @@ require '../Model/courses-getter-for-non-log.php';
                         <div class="flex items-center justify-between">
                             <div>
                                 <p class="text-gray-500">Active Subscriptions</p>
-                                <p class="text-3xl font-bold text-purple-800">8,910</p>
+                                <p class="text-3xl font-bold text-purple-800">0</p>
                             </div>
                             <i class="fas fa-chart-line text-4xl text-purple-500"></i>
                         </div>

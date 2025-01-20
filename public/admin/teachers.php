@@ -4,6 +4,8 @@ session_start();
 
 require '../../config/db.php';
 require '../Model/check-ad.php';
+require '../Model/teacher_request.php';
+
 
 ?>
 
@@ -125,63 +127,59 @@ require '../Model/check-ad.php';
                     <h1 class="text-3xl font-bold text-purple-800">Teacher Requests</h1>
                     <p class="text-gray-600">Review and manage teacher requests.</p>
                 </div>
-        
+
                 <div class="mb-8">
                     <div class="flex space-x-4 border-b">
-                        <button class="tab-button px-4 py-2 text-purple-800 border-b-2 border-purple-800">Pending</button>
+                        <button
+                            class="tab-button px-4 py-2 text-purple-800 border-b-2 border-purple-800">Pending</button>
                         <button class="tab-button px-4 py-2 text-gray-500 hover:text-purple-800">Accepted</button>
                         <button class="tab-button px-4 py-2 text-gray-500 hover:text-purple-800">Refused</button>
                     </div>
                 </div>
-        
-                <div id="pending-requests" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-                    <div class="request-card bg-white p-6 rounded-lg shadow-md transition duration-300">
-                        <div class="flex items-center space-x-4 mb-4">
-                            <img src="../../assets/images/Guest-user.png" alt="User Avatar" class="w-10 h-10 rounded-full">
-                            <div>
-                                <h3 class="text-lg font-semibold text-purple-800">John Doe</h3>
-                                <p class="text-sm text-gray-500">john.doe@example.com</p>
+
+                <div id="pending-requests" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 p-6">
+                    <?php foreach ($pendingTeachers as $teacher): ?>
+                        <div class="request-card bg-white p-6 rounded-lg shadow-md transition duration-300">
+                            <div class="flex items-center space-x-4 mb-4">
+                                <img src="../../assets/images/Guest-user.png" alt="User Avatar"
+                                    class="w-10 h-10 rounded-full">
+                                <div>
+                                    <h3 class="text-lg font-semibold text-purple-800">
+                                        <?php echo htmlspecialchars($teacher['username'], ENT_QUOTES, 'UTF-8'); ?></h3>
+                                    <p class="text-sm text-gray-500">
+                                        <?php echo htmlspecialchars($teacher['email'], ENT_QUOTES, 'UTF-8'); ?></p>
+                                </div>
+                            </div>
+                            <div class="mb-4">
+                                <p class="text-sm text-gray-600">Requested to become a teacher.</p>
+                            </div>
+                            <div class="flex items-center justify-between">
+                                <form action="" method="POST" class="inline">
+                                    <input type="hidden" name="user_id" value="<?php echo $teacher['user_id']; ?>">
+                                    <input type="hidden" name="status" value="active">
+                                    <button type="submit"
+                                        class="bg-green-500 text-white px-4 py-2 rounded-lg hover:bg-green-600 transition duration-300">
+                                        <i class="fas fa-check mr-2"></i>Accept
+                                    </button>
+                                </form>
+                                <form action="" method="POST" class="inline">
+                                    <input type="hidden" name="user_id" value="<?php echo $teacher['user_id']; ?>">
+                                    <input type="hidden" name="status" value="suspended">
+                                    <button type="submit"
+                                        class="bg-red-500 text-white px-4 py-2 rounded-lg hover:bg-red-600 transition duration-300">
+                                        <i class="fas fa-times mr-2"></i>Refuse
+                                    </button>
+                                </form>
                             </div>
                         </div>
-                        <div class="mb-4">
-                            <p class="text-sm text-gray-600">Requested to become a teacher. Specializes in Web Development.</p>
-                        </div>
-                        <div class="flex items-center justify-between">
-                            <button class="bg-green-500 text-white px-4 py-2 rounded-lg hover:bg-green-600 transition duration-300">
-                                <i class="fas fa-check mr-2"></i>Accept
-                            </button>
-                            <button class="bg-red-500 text-white px-4 py-2 rounded-lg hover:bg-red-600 transition duration-300">
-                                <i class="fas fa-times mr-2"></i>Refuse
-                            </button>
-                        </div>
-                    </div>
-        
-                    <div class="request-card bg-white p-6 rounded-lg shadow-md transition duration-300">
-                        <div class="flex items-center space-x-4 mb-4">
-                            <img src="../../assets/images/Guest-user.png" alt="User Avatar" class="w-10 h-10 rounded-full">
-                            <div>
-                                <h3 class="text-lg font-semibold text-purple-800">Jane Smith</h3>
-                                <p class="text-sm text-gray-500">jane.smith@example.com</p>
-                            </div>
-                        </div>
-                        <div class="mb-4">
-                            <p class="text-sm text-gray-600">Requested to become a teacher. Specializes in Data Science.</p>
-                        </div>
-                        <div class="flex items-center justify-between">
-                            <button class="bg-green-500 text-white px-4 py-2 rounded-lg hover:bg-green-600 transition duration-300">
-                                <i class="fas fa-check mr-2"></i>Accept
-                            </button>
-                            <button class="bg-red-500 text-white px-4 py-2 rounded-lg hover:bg-red-600 transition duration-300">
-                                <i class="fas fa-times mr-2"></i>Refuse
-                            </button>
-                        </div>
-                    </div>
+                    <?php endforeach; ?>
                 </div>
-        
+
                 <div id="accepted-requests" class="hidden grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
                     <div class="request-card bg-white p-6 rounded-lg shadow-md transition duration-300">
                         <div class="flex items-center space-x-4 mb-4">
-                            <img src="../../assets/images/Guest-user.png" alt="User Avatar" class="w-10 h-10 rounded-full">
+                            <img src="../../assets/images/Guest-user.png" alt="User Avatar"
+                                class="w-10 h-10 rounded-full">
                             <div>
                                 <h3 class="text-lg font-semibold text-purple-800">Alice Johnson</h3>
                                 <p class="text-sm text-gray-500">alice.johnson@example.com</p>
@@ -195,11 +193,12 @@ require '../Model/check-ad.php';
                         </div>
                     </div>
                 </div>
-        
+
                 <div id="refused-requests" class="hidden grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
                     <div class="request-card bg-white p-6 rounded-lg shadow-md transition duration-300">
                         <div class="flex items-center space-x-4 mb-4">
-                            <img src="../../assets/images/Guest-user.png" alt="User Avatar" class="w-10 h-10 rounded-full">
+                            <img src="../../assets/images/Guest-user.png" alt="User Avatar"
+                                class="w-10 h-10 rounded-full">
                             <div>
                                 <h3 class="text-lg font-semibold text-purple-800">Bob Brown</h3>
                                 <p class="text-sm text-gray-500">bob.brown@example.com</p>
@@ -215,21 +214,21 @@ require '../Model/check-ad.php';
                 </div>
             </div>
         </main>
-        
+
         <script>
             const tabs = document.querySelectorAll('.tab-button');
             const pendingSection = document.getElementById('pending-requests');
             const acceptedSection = document.getElementById('accepted-requests');
             const refusedSection = document.getElementById('refused-requests');
-        
+
             tabs.forEach(tab => {
                 tab.addEventListener('click', () => {
                     tabs.forEach(t => t.classList.remove('border-purple-800', 'text-purple-800'));
                     tabs.forEach(t => t.classList.add('text-gray-500'));
-        
+
                     tab.classList.add('border-purple-800', 'text-purple-800');
                     tab.classList.remove('text-gray-500');
-        
+
                     if (tab.textContent === 'Pending') {
                         pendingSection.classList.remove('hidden');
                         acceptedSection.classList.add('hidden');
