@@ -364,17 +364,17 @@ $converter = new CommonMarkConverter();
                         <div class="flex items-center space-x-4">
                             <label class="flex items-center text-sm text-gray-600 hover:text-purple-600 cursor-pointer">
                                 <input type="radio" class="mr-2 rounded text-purple-600 focus:ring-purple-600"
-                                    name="type" value="all" checked>
+                                    name="type" value="all" checked id="filter-all">
                                 <span class="ml-1">All</span>
                             </label>
                             <label class="flex items-center text-sm text-gray-600 hover:text-purple-600 cursor-pointer">
                                 <input type="radio" class="mr-2 rounded text-purple-600 focus:ring-purple-600"
-                                    name="type" value="enrolled">
+                                    name="type" value="enrolled" id="filter-enrolled">
                                 <span class="ml-1">Enrolled</span>
                             </label>
                             <label class="flex items-center text-sm text-gray-600 hover:text-purple-600 cursor-pointer">
                                 <input type="radio" class="mr-2 rounded text-purple-600 focus:ring-purple-600"
-                                    name="type" value="not-enrolled">
+                                    name="type" value="not-enrolled" id="filter-not-enrolled">
                                 <span class="ml-1">Not Enrolled</span>
                             </label>
                         </div>
@@ -382,6 +382,35 @@ $converter = new CommonMarkConverter();
                 </div>
             </aside>
             <script>
+                document.addEventListener('DOMContentLoaded', function () {
+                    const filterAll = document.getElementById('filter-all');
+                    const filterEnrolled = document.getElementById('filter-enrolled');
+                    const filterNotEnrolled = document.getElementById('filter-not-enrolled');
+                    const courseContainers = document.querySelectorAll('.course-container');
+
+                    function filterCourses() {
+                        const selectedFilter = document.querySelector('input[name="type"]:checked').value;
+
+                        courseContainers.forEach(container => {
+                            const isEnrolled = container.querySelector('.complete-button') !== null;
+
+                            if (selectedFilter === 'all') {
+                                container.style.display = 'block';
+                            } else if (selectedFilter === 'enrolled' && isEnrolled) {
+                                container.style.display = 'block';
+                            } else if (selectedFilter === 'not-enrolled' && !isEnrolled) {
+                                container.style.display = 'block';
+                            } else {
+                                container.style.display = 'none';
+                            }
+                        });
+                    }
+
+                    filterAll.addEventListener('change', filterCourses);
+                    filterEnrolled.addEventListener('change', filterCourses);
+                    filterNotEnrolled.addEventListener('change', filterCourses);
+                });
+
                 document.addEventListener('DOMContentLoaded', function () {
                     const tagsContainer = document.getElementById('tagsContainer');
                     const selectedTagsInput = document.getElementById('selectedTags');
@@ -420,7 +449,7 @@ $converter = new CommonMarkConverter();
                                 $isEnrolled = $stmt->rowCount() > 0;
                                 ?>
                                 <div
-                                    class="bg-white rounded-xl shadow-lg overflow-hidden transition-shadow hover:shadow-xl mb-6">
+                                    class="course-container bg-white rounded-xl shadow-lg overflow-hidden transition-shadow hover:shadow-xl mb-6">
                                     <div class="flex flex-row max-[1000px]:flex-col">
                                         <img src="../../storage/uploads/course_thumbnails/<?php echo $course['thumbnail']; ?>"
                                             alt="Course Cover" class="w-[40%] max-[1000px]:w-full">
