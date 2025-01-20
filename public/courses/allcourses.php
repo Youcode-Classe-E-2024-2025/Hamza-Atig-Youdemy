@@ -146,7 +146,7 @@ require '../Model/courses-getter-for-non-log.php';
         <div class="px-4">
             <div class="flex items-center justify-between">
                 <div class="flex shrink-0">
-                    <a aria-current="page" class="flex items-center" href="">
+                    <a aria-current="page" class="flex items-center" href="../index.php">
                         <img class="h-9 w-auto" src="../../assets/images/logobanner.png" alt="">
                     </a>
                 </div>
