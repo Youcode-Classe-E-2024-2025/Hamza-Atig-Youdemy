@@ -289,11 +289,12 @@ $converter = new CommonMarkConverter();
                     </a>
                 </div>
                 <div class="flex items-center justify-end gap-3">
-                    <div class="search-bar flex items-center bg-gray-100 rounded-lg px-3 py-2">
+                    <form action="./inrollnow.php" method="get" class="search-bar flex items-center bg-gray-100 rounded-lg px-3 py-2">
                         <i class="fas fa-search text-gray-500"></i>
-                        <input type="text" placeholder="Search courses, tutors..."
+                        <input type="text" placeholder="Search courses, tutors..." name="search"
                             class="ml-2 bg-transparent focus:outline-none w-48">
-                    </div>
+                        <button type="submit" class="hidden"></button>
+                    </form>
                     <a href="../logout.php"
                         class="h-8 px-3 py-2 flex items-center justify-center rounded-xl bg-white text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 transition-all duration-150 hover:bg-gray-50 sm:inline-flex">
                         <i class="fas fa-sign-out-alt mr-2"></i>
