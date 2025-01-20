@@ -71,7 +71,7 @@ require '../Model/teacher_request.php';
                             <i class="fas fa-chevron-down ml-auto text-purple-400"></i>
                         </a>
                         <div class="dropdown-content pl-4">
-                            <a href="./allusers.html" class="block p-2 text-gray-700 rounded-lg"><i
+                            <a href="./allusers.php" class="block p-2 text-gray-700 rounded-lg"><i
                                     class="fas fa-users mr-2"></i>All Users</a>
                             <a href="#" class="block p-2 text-gray-700 rounded-lg"><i
                                     class="fas fa-chalkboard-teacher mr-2"></i>Teacher Programe</a>
