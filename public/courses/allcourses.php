@@ -1,9 +1,21 @@
 <?php
 session_start();
 require '../../config/db.php';
-
 require '../Model/courses-getter-for-non-log.php';
 
+$page = isset($_GET['page']) ? (int) $_GET['page'] : 1;
+$perPage = 10;
+
+$guest = new Guest($pdo);
+
+if (isset($_GET['search'])) {
+    $courses = $guest->search($_GET['search']);
+} else {
+    $courses = $guest->getPaginatedCoursesWithTeacher($page, $perPage);
+}
+
+$totalCourses = $guest->getTotalCoursesCount();
+$totalPages = ceil($totalCourses / $perPage);
 ?>
 
 <!DOCTYPE html>
@@ -348,6 +360,30 @@ require '../Model/courses-getter-for-non-log.php';
                         </div>
                     </div>
                 <?php endforeach; ?>
+                <div class="flex justify-center mt-8">
+                    <nav class="inline-flex rounded-md shadow-sm">
+                        <?php if ($page > 1): ?>
+                            <a href="?page=<?php echo $page - 1; ?>"
+                                class="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-l-md hover:bg-gray-50">
+                                Previous
+                            </a>
+                        <?php endif; ?>
+
+                        <?php for ($i = 1; $i <= $totalPages; $i++): ?>
+                            <a href="?page=<?php echo $i; ?>"
+                                class="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 hover:bg-gray-50 <?php echo $i === $page ? 'bg-purple-600 text-white' : ''; ?>">
+                                <?php echo $i; ?>
+                            </a>
+                        <?php endfor; ?>
+
+                        <?php if ($page < $totalPages): ?>
+                            <a href="?page=<?php echo $page + 1; ?>"
+                                class="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-r-md hover:bg-gray-50">
+                                Next
+                            </a>
+                        <?php endif; ?>
+                    </nav>
+                </div>
             </div>
         </div>
     </main>
