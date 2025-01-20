@@ -176,41 +176,59 @@ require '../Model/teacher_request.php';
                 </div>
 
                 <div id="accepted-requests" class="hidden grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-                    <div class="request-card bg-white p-6 rounded-lg shadow-md transition duration-300">
-                        <div class="flex items-center space-x-4 mb-4">
-                            <img src="../../assets/images/Guest-user.png" alt="User Avatar"
-                                class="w-10 h-10 rounded-full">
-                            <div>
-                                <h3 class="text-lg font-semibold text-purple-800">Alice Johnson</h3>
-                                <p class="text-sm text-gray-500">alice.johnson@example.com</p>
+                    <?php
+                    $stmt = $database->connect()->prepare("SELECT * FROM users WHERE role = 'teacher' AND status = 'active'");
+                    $stmt->execute();
+                    $acceptedTeachers = $stmt->fetchAll();
+                    foreach ($acceptedTeachers as $teacher):
+                    ?>
+                        <div class="request-card bg-white p-6 rounded-lg shadow-md transition duration-300">
+                            <div class="flex items-center space-x-4 mb-4">
+                                <img src="../../assets/images/Guest-user.png" alt="User Avatar"
+                                    class="w-10 h-10 rounded-full">
+                                <div>
+                                    <h3 class="text-lg font-semibold text-purple-800">
+                                        <?php echo htmlspecialchars($teacher['username'], ENT_QUOTES, 'UTF-8'); ?></h3>
+                                    <p class="text-sm text-gray-500">
+                                        <?php echo htmlspecialchars($teacher['email'], ENT_QUOTES, 'UTF-8'); ?></p>
+                                </div>
+                            </div>
+                            <div class="mb-4">
+                                <p class="text-sm text-gray-600">Accepted to become a teacher.</p>
+                            </div>
+                            <div class="flex items-center justify-center">
+                                <span class="text-sm text-green-500"><i class="fas fa-check-circle mr-2"></i>Accepted</span>
                             </div>
                         </div>
-                        <div class="mb-4">
-                            <p class="text-sm text-gray-600">Specializes in Mobile Development.</p>
-                        </div>
-                        <div class="flex items-center justify-center">
-                            <span class="text-sm text-green-500"><i class="fas fa-check-circle mr-2"></i>Accepted</span>
-                        </div>
-                    </div>
+                    <?php endforeach; ?>
                 </div>
 
                 <div id="refused-requests" class="hidden grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-                    <div class="request-card bg-white p-6 rounded-lg shadow-md transition duration-300">
-                        <div class="flex items-center space-x-4 mb-4">
-                            <img src="../../assets/images/Guest-user.png" alt="User Avatar"
-                                class="w-10 h-10 rounded-full">
-                            <div>
-                                <h3 class="text-lg font-semibold text-purple-800">Bob Brown</h3>
-                                <p class="text-sm text-gray-500">bob.brown@example.com</p>
+                    <?php
+                    $stmt = $database->connect()->prepare("SELECT * FROM users WHERE role = 'teacher' AND status = 'suspended'");
+                    $stmt->execute();
+                    $refusedTeachers = $stmt->fetchAll();
+                    foreach ($refusedTeachers as $teacher):
+                    ?>
+                        <div class="request-card bg-white p-6 rounded-lg shadow-md transition duration-300">
+                            <div class="flex items-center space-x-4 mb-4">
+                                <img src="../../assets/images/Guest-user.png" alt="User Avatar"
+                                    class="w-10 h-10 rounded-full">
+                                <div>
+                                    <h3 class="text-lg font-semibold text-purple-800">
+                                        <?php echo htmlspecialchars($teacher['username'], ENT_QUOTES, 'UTF-8'); ?></h3>
+                                    <p class="text-sm text-gray-500">
+                                        <?php echo htmlspecialchars($teacher['email'], ENT_QUOTES, 'UTF-8'); ?></p>
+                                </div>
+                            </div>
+                            <div class="mb-4">
+                                <p class="text-sm text-gray-600">Specializes in UI/UX Design.</p>
+                            </div>
+                            <div class="flex items-center justify-center">
+                                <span class="text-sm text-red-500"><i class="fas fa-times-circle mr-2"></i>Refused</span>
                             </div>
                         </div>
-                        <div class="mb-4">
-                            <p class="text-sm text-gray-600">Specializes in UI/UX Design.</p>
-                        </div>
-                        <div class="flex items-center justify-center">
-                            <span class="text-sm text-red-500"><i class="fas fa-times-circle mr-2"></i>Refused</span>
-                        </div>
-                    </div>
+                    <?php endforeach; ?>
                 </div>
             </div>
         </main>
