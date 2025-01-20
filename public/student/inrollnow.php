@@ -10,6 +10,20 @@ require __DIR__ . '/../../vendor/autoload.php';
 
 use League\CommonMark\CommonMarkConverter;
 $converter = new CommonMarkConverter();
+
+$page = isset($_GET['page']) ? (int) $_GET['page'] : 1;
+$perPage = 1;
+
+$course = new CourseSTD($pdo);
+
+if (isset($_GET['search'])) {
+    $courses = $course->search($_GET['search']);
+} else {
+    $courses = $course->getPaginatedCoursesSTD($page, $perPage);
+}
+
+$totalCourses = $course->getTotalCoursesCountSTD();
+$totalPages = ceil($totalCourses / $perPage);
 ?>
 
 <!DOCTYPE html>
@@ -289,7 +303,8 @@ $converter = new CommonMarkConverter();
                     </a>
                 </div>
                 <div class="flex items-center justify-end gap-3">
-                    <form action="./inrollnow.php" method="get" class="search-bar flex items-center bg-gray-100 rounded-lg px-3 py-2">
+                    <form action="./inrollnow.php" method="get"
+                        class="search-bar flex items-center bg-gray-100 rounded-lg px-3 py-2">
                         <i class="fas fa-search text-gray-500"></i>
                         <input type="text" placeholder="Search courses, tutors..." name="search"
                             class="ml-2 bg-transparent focus:outline-none w-48">
@@ -603,6 +618,25 @@ $converter = new CommonMarkConverter();
 
         </div>
     </main>
+
+    <div class="flex justify-center mt-8">
+        <nav class="inline-flex rounded-md shadow-sm bg-white border border-gray-300">
+            <a href="<?php echo $page > 1 ? '?page=' . ($page - 1) . (isset($_GET['search']) ? '&search=' . urlencode($_GET['search']) : '') : '#' ?>"
+                class="px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50 transition duration-300 <?php echo $page === 1 ? 'cursor-not-allowed opacity-50' : '' ?>">
+                <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path></svg>
+            </a>
+            <?php for ($i = 1; $i <= $totalPages; $i++): ?>
+                <a href="?page=<?php echo $i; ?><?php echo isset($_GET['search']) ? '&search=' . urlencode($_GET['search']) : ''; ?>"
+                    class="px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50 transition duration-300 <?php echo $i === $page ? 'bg-purple-600 text-white' : ''; ?> <?php echo $i === 1 ? 'rounded-l-md' : '' ?> <?php echo $i === $totalPages ? 'rounded-r-md' : '' ?>">
+                    <?php echo $i; ?>
+                </a>
+            <?php endfor; ?>
+            <a href="<?php echo $page < $totalPages ? '?page=' . ($page + 1) . (isset($_GET['search']) ? '&search=' . urlencode($_GET['search']) : '') : '#' ?>"
+                class="px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50 transition duration-300 <?php echo $page === $totalPages ? 'cursor-not-allowed opacity-50' : '' ?>">
+                <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
+            </a>
+        </nav>
+    </div>
 
     <footer class="bg-gray-50 text-gray-800 py-12 border-t-2">
         <div class="container mx-auto px-4">

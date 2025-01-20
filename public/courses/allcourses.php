@@ -4,7 +4,7 @@ require '../../config/db.php';
 require '../Model/courses-getter-for-non-log.php';
 
 $page = isset($_GET['page']) ? (int) $_GET['page'] : 1;
-$perPage = 10;
+$perPage = 1;
 
 $guest = new Guest($pdo);
 
@@ -302,11 +302,11 @@ $totalPages = ceil($totalCourses / $perPage);
                         <button type="submit" class="hidden"></button>
                     </form>
                     <a class="hidden items-center justify-center rounded-xl bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 transition-all duration-150 hover:bg-gray-50 sm:inline-flex"
-                        href="../signin.html">
+                        href="../signin.php">
                         <i class="fas fa-user mr-1"></i>Sign in
                     </a>
                     <a class="inline-flex items-center justify-center rounded-xl bg-purple-600 px-3 py-2 text-sm font-semibold text-white shadow-sm transition-all duration-150 hover:bg-blue-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600"
-                        href="../login.html">
+                        href="../login.php">
                         <i class="fas fa-sign-in-alt mr-1"></i>Login
                     </a>
                 </div>
@@ -361,25 +361,23 @@ $totalPages = ceil($totalCourses / $perPage);
                     </div>
                 <?php endforeach; ?>
                 <div class="flex justify-center mt-8">
-                    <nav class="inline-flex rounded-md shadow-sm">
+                    <nav class="inline-flex rounded-md shadow-sm overflow-hidden">
                         <?php if ($page > 1): ?>
                             <a href="?page=<?php echo $page - 1; ?>"
-                                class="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-l-md hover:bg-gray-50">
-                                Previous
+                                class="px-4 py-2 text-sm font-medium text-gray-700 bg-white border-t border-b border-l border-gray-300 hover:bg-gray-50 transition duration-300">
+                                <i class="fas fa-chevron-left mr-1"></i> Previous
                             </a>
                         <?php endif; ?>
-
                         <?php for ($i = 1; $i <= $totalPages; $i++): ?>
                             <a href="?page=<?php echo $i; ?>"
-                                class="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 hover:bg-gray-50 <?php echo $i === $page ? 'bg-purple-600 text-white' : ''; ?>">
+                                class="px-4 py-2 text-sm font-medium <?php echo $i === $page ? 'bg-purple-600 text-white' : 'text-gray-700 bg-white'; ?> border-t border-b border-gray-300 hover:bg-gray-50 transition duration-300">
                                 <?php echo $i; ?>
                             </a>
                         <?php endfor; ?>
-
                         <?php if ($page < $totalPages): ?>
                             <a href="?page=<?php echo $page + 1; ?>"
-                                class="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-r-md hover:bg-gray-50">
-                                Next
+                                class="px-4 py-2 text-sm font-medium text-gray-700 bg-white border-t border-b border-r border-gray-300 hover:bg-gray-50 transition duration-300">
+                                Next <i class="fas fa-chevron-right ml-1"></i>
                             </a>
                         <?php endif; ?>
                     </nav>
