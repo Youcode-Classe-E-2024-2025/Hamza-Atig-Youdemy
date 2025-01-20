@@ -282,11 +282,13 @@ require '../Model/courses-getter-for-non-log.php';
                     </a>
                 </div>
                 <div class="flex items-center justify-end gap-3">
-                    <div class="search-bar flex items-center bg-gray-100 rounded-lg px-3 py-2">
+                    <form action="./allcourses.php" method="get"
+                        class="search-bar flex items-center bg-gray-100 rounded-lg px-3 py-2">
                         <i class="fas fa-search text-gray-500"></i>
-                        <input type="text" placeholder="Search courses, tutors..."
+                        <input type="text" placeholder="Search courses, tutors..." name="search"
                             class="ml-2 bg-transparent focus:outline-none w-48">
-                    </div>
+                        <button type="submit" class="hidden"></button>
+                    </form>
                     <a class="hidden items-center justify-center rounded-xl bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 transition-all duration-150 hover:bg-gray-50 sm:inline-flex"
                         href="../signin.html">
                         <i class="fas fa-user mr-1"></i>Sign in
